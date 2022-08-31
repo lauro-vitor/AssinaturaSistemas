@@ -12,10 +12,10 @@ using System.Net.Http.Headers;
 using Getnet.DTO.Error;
 using Getnet.DTO.Credit;
 using Getnet.DTO.PaymentCreditCard;
-
+using GetNet.Util;
 namespace Getnet.Service
 {
-    public class PaymentService : IPaymentService
+    public class PaymentService : Key, IPaymentService
     {
         private readonly string _tokenBearer;
 
@@ -26,9 +26,9 @@ namespace Getnet.Service
 
         public async Task<CardVerificationResponse> GetCardVerification(string numberToken, Brand brand, string cardHolderName, string expirationMonth, string expirationYear, string securityCode)
         {
-            AppSettingsService appSettingsService = new AppSettingsService();
+           
             HttpClientHandler httpClientHandler = new HttpClientHandler();
-            AppSettings appSettings = new AppSettings();
+           
 
             CardVerificationRequest cardVerificationRequest = new CardVerificationRequest()
             {
@@ -43,7 +43,7 @@ namespace Getnet.Service
             string requestBody = "";
             string responseBody = "";
 
-            appSettings = appSettingsService.GetAppSettings();
+            
 
             httpClientHandler.AutomaticDecompression |= DecompressionMethods.GZip | DecompressionMethods.Deflate | DecompressionMethods.None;
 
@@ -58,13 +58,13 @@ namespace Getnet.Service
                 HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
                 {
                     Method = new HttpMethod("POST"),
-                    RequestUri = new Uri($"{appSettings.UrlApi}/v1/cards/verification"),
+                    RequestUri = new Uri($"{this.UrlApi}/v1/cards/verification"),
                     Content = new StringContent(requestBody, Encoding.UTF8, "application/json")
                 };
 
 
                 httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _tokenBearer);
-                httpRequestMessage.Headers.TryAddWithoutValidation("seller_id ", appSettings.SellerId);
+                httpRequestMessage.Headers.TryAddWithoutValidation("seller_id ", this.SellerId);
 
                 httpResponseMessage = await httpClient.SendAsync(httpRequestMessage);
                 responseBody = await httpResponseMessage.Content.ReadAsStringAsync();
@@ -85,9 +85,6 @@ namespace Getnet.Service
 
         public async Task<PaymentCreditCardResponse> PaymentsCredit(long amount, Currency currency, Order order, Customer customer, Device device, List<Shipping> shippings, SubMerchant subMerchant, CreditRequest creditRequest)
         {
-
-            AppSettingsService appSettingsService;
-            AppSettings appSettings;
             PaymentCreditCardRequest paymentCreditCardRequest;
             PaymentCreditCardResponse paymentCreditCardResponse;
             HttpClientHandler httpClientHandler;
@@ -98,13 +95,10 @@ namespace Getnet.Service
             string result = "";
 
             //atribuicao
-            appSettingsService = new AppSettingsService();
-
-            appSettings = appSettingsService.GetAppSettings();
-
+          
             paymentCreditCardRequest = new PaymentCreditCardRequest()
             {
-                SellerId = appSettings.SellerId,
+                SellerId = this.SellerId,
                 Amount = amount,
                 Currency = currency,
                 Order = order,
@@ -130,7 +124,7 @@ namespace Getnet.Service
                 {
                     Method = new HttpMethod("POST"),
                     Content = new StringContent(requestBody, Encoding.UTF8, "application/json"),
-                    RequestUri = new Uri(appSettings.UrlApi + "/v1/payments/credit"),
+                    RequestUri = new Uri(this.UrlApi + "/v1/payments/credit"),
                 };
 
                 httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _tokenBearer);

@@ -8,29 +8,27 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-
+using GetNet.Util;
 namespace Getnet.Service
 {
-    public class TokenizationService : ITokenizationService
+    public class TokenizationService : Key, ITokenizationService
     {
         private readonly string _tokenBearer;
-        public TokenizationService(string tokenBearer)
+        public TokenizationService(string tokenBearer):base()
         {
             _tokenBearer = tokenBearer;
         }
 
         public async Task<string> GetCreditCardToken(string cardNumber, string custumerId)
         {
-            AppSettingsService appSettingsService = new AppSettingsService();
-            AppSettings appSettings = appSettingsService.GetAppSettings();
-
+            
             TokenizationRequest tokenizationRequest = new TokenizationRequest()
             {
                 CardNumber = cardNumber,
                 CustomerId = custumerId
             };
 
-            string requestUri = appSettings.UrlApi + "/v1/tokens/card";
+            string requestUri = this.UrlApi + "/v1/tokens/card";
             string requestBody = JsonConvert.SerializeObject(tokenizationRequest);
 
             HttpClientHandler clientHandler = new HttpClientHandler();
@@ -50,7 +48,7 @@ namespace Getnet.Service
 
                 ////headers
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _tokenBearer);
-                requestMessage.Headers.TryAddWithoutValidation("seller_id", appSettings.SellerId);
+                requestMessage.Headers.TryAddWithoutValidation("seller_id", this.SellerId);
 
 
                 HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(requestMessage);

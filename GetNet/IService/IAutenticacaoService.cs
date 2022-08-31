@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GetNet
+namespace Getnet.IService
 {
-    public class Class1
+    public interface IAutenticacaoService
     {
+        Task<string> GeracaoTokenAcesso();
     }
 }

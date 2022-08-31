@@ -8,17 +8,16 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using GetNet.Util;
 
 namespace Getnet.Service
 {
-    public class AuthenticationService : IAuthenticationService
+    public class AutenticacaoService : Key, IAutenticacaoService
     {
-        public async Task<string> GetToken()
+      
+        public async Task<string> GeracaoTokenAcesso()
         {
-
-            AppSettingsService appSettingsService = new AppSettingsService();
-            AppSettings appSettings = appSettingsService.GetAppSettings();
-            string requestUri = appSettings.UrlApi + "/auth/oauth/v2/token";
+            string requestUri = this.UrlApi + "/auth/oauth/v2/token";
 
             using (HttpClient httpClient = new HttpClient())
             {
@@ -32,7 +31,7 @@ namespace Getnet.Service
 
                 HttpContent content = new FormUrlEncodedContent(parameters);
 
-                string parameter = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes($"{appSettings.ClientId}:{appSettings.ClientSecret}"));
+                string parameter = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes($"{this.ClientId}:{this.ClientSecret}"));
 
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", parameter);
 
@@ -50,5 +49,7 @@ namespace Getnet.Service
                 return authentication.AccessToken;
             }
         }
+
+        
     }
 }
