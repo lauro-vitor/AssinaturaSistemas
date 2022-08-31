@@ -1,0 +1,8 @@
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemaSolution\GetNet\bin\Debug\GetNet.dll
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemaSolution\GetNet\bin\Debug\GetNet.pdb
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemaSolution\GetNet\bin\Debug\Newtonsoft.Json.dll
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemaSolution\GetNet\bin\Debug\Newtonsoft.Json.xml
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemaSolution\GetNet\obj\Debug\GetNet.csproj.CoreCompileInputs.cache
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemaSolution\GetNet\obj\Debug\GetNet.csproj.CopyComplete
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemaSolution\GetNet\obj\Debug\GetNet.dll
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemaSolution\GetNet\obj\Debug\GetNet.pdb

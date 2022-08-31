@@ -1,0 +1,6 @@
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemaSolution\Executor\bin\Debug\Executor.exe.config
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemaSolution\Executor\bin\Debug\Executor.exe
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemaSolution\Executor\bin\Debug\Executor.pdb
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemaSolution\Executor\obj\Debug\Executor.csproj.CoreCompileInputs.cache
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemaSolution\Executor\obj\Debug\Executor.exe
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemaSolution\Executor\obj\Debug\Executor.pdb

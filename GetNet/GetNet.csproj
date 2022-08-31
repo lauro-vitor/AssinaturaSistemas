@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6AC2815D-009D-4FD5-869A-D0415873D05A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GetNet</RootNamespace>
+    <AssemblyName>GetNet</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="DTO\Address.cs" />
+    <Compile Include="DTO\AppSettings.cs" />
+    <Compile Include="DTO\Authentication.cs" />
+    <Compile Include="DTO\BillingAddress.cs" />
+    <Compile Include="DTO\Brand.cs" />
+    <Compile Include="DTO\Card.cs" />
+    <Compile Include="DTO\CardVerification\CardVerificationRequest.cs" />
+    <Compile Include="DTO\CardVerification\CardVerificationResponse.cs" />
+    <Compile Include="DTO\Credit\CreditRequest.cs" />
+    <Compile Include="DTO\Credit\CreditResponse.cs" />
+    <Compile Include="DTO\Currency.cs" />
+    <Compile Include="DTO\Customer.cs" />
+    <Compile Include="DTO\Device.cs" />
+    <Compile Include="DTO\DocumentType.cs" />
+    <Compile Include="DTO\Error\ErrorDetail.cs" />
+    <Compile Include="DTO\Error\ErrorResponse.cs" />
+    <Compile Include="DTO\Order.cs" />
+    <Compile Include="DTO\PaymentCreditCard\PaymentCreditCardRequest.cs" />
+    <Compile Include="DTO\PaymentCreditCard\PaymentCreditCardResponse.cs" />
+    <Compile Include="DTO\ProductType.cs" />
+    <Compile Include="DTO\Shipping.cs" />
+    <Compile Include="DTO\SubMerchant.cs" />
+    <Compile Include="DTO\Tokenization\TokenizationRequest.cs" />
+    <Compile Include="DTO\Tokenization\TokenizationResponse.cs" />
+    <Compile Include="DTO\TransactionType.cs" />
+    <Compile Include="IService\IAppSettingsService.cs" />
+    <Compile Include="IService\IAuthenticationService.cs" />
+    <Compile Include="IService\IPaymentService.cs" />
+    <Compile Include="IService\ITokenizationService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\AppSettingsService.cs" />
+    <Compile Include="Service\AuthenticationService.cs" />
+    <Compile Include="Service\PaymentService.cs" />
+    <Compile Include="Service\TokenizationService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
