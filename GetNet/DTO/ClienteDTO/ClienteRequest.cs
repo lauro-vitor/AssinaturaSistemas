@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GetNet.DTO
+namespace GetNet.DTO.ClienteDTO
 {
-    public class Cliente
+    public class ClienteRequest
     {
         [JsonProperty("seller_id")]
         public string SellerId { get; set; }
@@ -45,11 +45,11 @@ namespace GetNet.DTO
 
         [JsonProperty("address")]
         public Address Address { get; set; }
-        public Cliente()
+        public ClienteRequest()
         {
 
         }
-        public Cliente(string customerId,
+        public ClienteRequest(string customerId,
             string firstName,
             string lastName,
             DocumentType documentType,

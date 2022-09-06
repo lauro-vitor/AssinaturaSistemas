@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Getnet.DTO;
-using GetNet.DTO;
+using GetNet.DTO.ClienteDTO;
 using GetNet.IService;
 using GetNet.Util;
 using System.Net;
@@ -48,7 +48,7 @@ namespace GetNet.Service
                 Complement = complement, // nao pode ser null
             };
 
-            Cliente cliente = new Cliente()
+            ClienteRequest cliente = new ClienteRequest()
             {
                 SellerId = _key.SellerId,
                 CustomerId = customerId,
