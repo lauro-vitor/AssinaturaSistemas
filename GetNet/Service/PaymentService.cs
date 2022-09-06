@@ -15,12 +15,14 @@ using Getnet.DTO.PaymentCreditCard;
 using GetNet.Util;
 namespace Getnet.Service
 {
-    public class PaymentService : Key, IPaymentService
+    public class PaymentService :  IPaymentService
     {
         private readonly string _tokenBearer;
+        private readonly Key _key;
 
         public PaymentService(string tokenBearer)
         {
+            _key = new Key();
             _tokenBearer = tokenBearer;
         }
 
@@ -58,13 +60,13 @@ namespace Getnet.Service
                 HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
                 {
                     Method = new HttpMethod("POST"),
-                    RequestUri = new Uri($"{this.UrlApi}/v1/cards/verification"),
+                    RequestUri = new Uri($"{_key.UrlApi}/v1/cards/verification"),
                     Content = new StringContent(requestBody, Encoding.UTF8, "application/json")
                 };
 
 
                 httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _tokenBearer);
-                httpRequestMessage.Headers.TryAddWithoutValidation("seller_id ", this.SellerId);
+                httpRequestMessage.Headers.TryAddWithoutValidation("seller_id ", _key.SellerId);
 
                 httpResponseMessage = await httpClient.SendAsync(httpRequestMessage);
                 responseBody = await httpResponseMessage.Content.ReadAsStringAsync();
@@ -98,7 +100,7 @@ namespace Getnet.Service
           
             paymentCreditCardRequest = new PaymentCreditCardRequest()
             {
-                SellerId = this.SellerId,
+                SellerId = _key.SellerId,
                 Amount = amount,
                 Currency = currency,
                 Order = order,
@@ -124,7 +126,7 @@ namespace Getnet.Service
                 {
                     Method = new HttpMethod("POST"),
                     Content = new StringContent(requestBody, Encoding.UTF8, "application/json"),
-                    RequestUri = new Uri(this.UrlApi + "/v1/payments/credit"),
+                    RequestUri = new Uri(_key.UrlApi + "/v1/payments/credit"),
                 };
 
                 httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _tokenBearer);

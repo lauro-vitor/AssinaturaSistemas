@@ -12,12 +12,17 @@ using GetNet.Util;
 
 namespace Getnet.Service
 {
-    public class AutenticacaoService : Key, IAutenticacaoService
+    public class AutenticacaoService :  IAutenticacaoService
     {
-      
+        private readonly Key _key;
+        public AutenticacaoService()
+        {
+            _key = new Key();
+        }
+
         public async Task<string> GeracaoTokenAcesso()
         {
-            string requestUri = this.UrlApi + "/auth/oauth/v2/token";
+            string requestUri = _key.UrlApi + "/auth/oauth/v2/token";
 
             using (HttpClient httpClient = new HttpClient())
             {
@@ -31,7 +36,7 @@ namespace Getnet.Service
 
                 HttpContent content = new FormUrlEncodedContent(parameters);
 
-                string parameter = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes($"{this.ClientId}:{this.ClientSecret}"));
+                string parameter = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes($"{_key.ClientId}:{_key.ClientSecret}"));
 
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", parameter);
 

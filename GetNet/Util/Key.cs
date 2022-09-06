@@ -9,10 +9,10 @@ namespace GetNet.Util
 {
     public class Key
     {
-        protected string ClientId { get; private set; }
-        protected string ClientSecret { get; private set; }
-        protected string UrlApi { get; private set; }
-        protected string SellerId { get; private set; }
+        public string ClientId { get; private set; }
+        public string ClientSecret { get; private set; }
+        public string UrlApi { get; private set; }
+        public string SellerId { get; private set; }
         public Key()
         {
             ClientId = ConfigurationManager.AppSettings["client_id"];

@@ -11,11 +11,13 @@ using System.Threading.Tasks;
 using GetNet.Util;
 namespace Getnet.Service
 {
-    public class TokenizationService : Key, ITokenizationService
+    public class TokenizationService :  ITokenizationService
     {
+        private readonly Key _key;
         private readonly string _tokenBearer;
         public TokenizationService(string tokenBearer):base()
         {
+            _key = new Key();
             _tokenBearer = tokenBearer;
         }
 
@@ -28,7 +30,7 @@ namespace Getnet.Service
                 CustomerId = custumerId
             };
 
-            string requestUri = this.UrlApi + "/v1/tokens/card";
+            string requestUri = _key.UrlApi + "/v1/tokens/card";
             string requestBody = JsonConvert.SerializeObject(tokenizationRequest);
 
             HttpClientHandler clientHandler = new HttpClientHandler();
@@ -48,7 +50,7 @@ namespace Getnet.Service
 
                 ////headers
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _tokenBearer);
-                requestMessage.Headers.TryAddWithoutValidation("seller_id", this.SellerId);
+                requestMessage.Headers.TryAddWithoutValidation("seller_id", _key.SellerId);
 
 
                 HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(requestMessage);

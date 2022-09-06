@@ -90,9 +90,11 @@
     <Compile Include="DTO\TransactionType.cs" />
     <Compile Include="IService\IAutenticacaoService.cs" />
     <Compile Include="IService\IPaymentService.cs" />
+    <Compile Include="IService\IClienteService.cs" />
     <Compile Include="IService\ITokenizationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\AutenticacaoService.cs" />
+    <Compile Include="Service\ClienteService.cs" />
     <Compile Include="Service\PaymentService.cs" />
     <Compile Include="Service\TokenizationService.cs" />
     <Compile Include="Util\Key.cs" />
