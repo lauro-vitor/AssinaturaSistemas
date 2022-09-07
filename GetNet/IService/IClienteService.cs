@@ -1,4 +1,5 @@
 ﻿using Getnet.DTO;
+using GetNet.DTO.ClienteDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,8 +43,30 @@ namespace GetNet.IService
             string number,
             string street,
             string complement);
-
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page">
+        /// Número da página em que inicia a paginação, deve ser maior ou igual a 1 :obrigatório
+        /// </param>
+        /// <param name="limit">
+        /// Limite de resultados 0 a 9999 :obrigatório
+        /// </param>
+        /// <param name="customerId"></param>
+        /// <param name="documentNumber"></param>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="sort"></param>
+        /// <param name="sortType"></param>
+        /// <returns></returns>
+        Task<ClienteResponse> ListaDosClientes(int page, 
+            int limit, 
+            string customerId, 
+            string documentNumber, 
+            string firstName, 
+            string lastName, 
+            string sort, 
+            string sortType);
 
     }
 }

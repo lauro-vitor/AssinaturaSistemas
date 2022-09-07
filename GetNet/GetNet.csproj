@@ -70,6 +70,7 @@
     <Compile Include="DTO\Card.cs" />
     <Compile Include="DTO\CardVerification\CardVerificationRequest.cs" />
     <Compile Include="DTO\CardVerification\CardVerificationResponse.cs" />
+    <Compile Include="DTO\ClienteDTO\Cliente.cs" />
     <Compile Include="DTO\ClienteDTO\ClienteRequest.cs" />
     <Compile Include="DTO\ClienteDTO\ClienteResponse.cs" />
     <Compile Include="DTO\Credit\CreditRequest.cs" />
