@@ -1,0 +1,5 @@
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemas\Util\bin\Debug\Util.dll
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemas\Util\bin\Debug\Util.pdb
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemas\Util\obj\Debug\Util.csproj.CoreCompileInputs.cache
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemas\Util\obj\Debug\Util.dll
+C:\Users\lauropina\Documents\Lauro\TCC\projeto\AssinaturaSistemas\Util\obj\Debug\Util.pdb

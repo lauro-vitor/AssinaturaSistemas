@@ -1,0 +1,57 @@
+﻿@model AssinaturaSistemasSolution.Models.AccountModel
+@{
+    ViewBag.Title = "Account";
+    Layout = "~/Views/Shared/_StripeLayout.cshtml";
+}
+<main>
+    <h1>Account</h1>
+
+    <a href="prices.html">Add a subscription</a>
+    <a href="register.html">Restart demo</a>
+
+    <h2>Subscriptions</h2>
+
+    @if (Model.HasError)
+    {
+        <div class="alert alert-danger">
+            <ul>
+                @foreach (var erro in Model.MessageErros)
+                {
+                    <li>@erro</li>
+                }
+            </ul>
+        </div>
+    }
+    else
+    {
+        foreach (var subscription in Model.Subscriptions)
+        {
+            <hr />
+            <h4>
+                <a href="https://dashboard.stripe.com/test/subscriptions/@subscription.Id">
+                    @subscription.Id
+                </a>
+            </h4>
+
+            <p>
+                Status: @subscription.Status
+            </p>
+
+            <p>
+                Card last4:
+                @if (subscription.DefaultPaymentMethod != null && subscription.DefaultPaymentMethod.Card != null)
+                {
+                    <span>@subscription.DefaultPaymentMethod.Card.Last4</span>
+                }
+            </p>
+            <small>If the last4 is blank, ensure webhooks are being handled. The default payment method is set in the webhook handler.</small>
+
+            <p>
+                Current period end: @subscription.CurrentPeriodEnd.ToString("dd/MM/yyyy")
+            </p>
+
+            <br />
+        }
+    }
+   
+</main>

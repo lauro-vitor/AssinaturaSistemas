@@ -42,12 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClienteBLL.cs" />
+    <Compile Include="EstadoBLL.cs" />
+    <Compile Include="PaisBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GetNet\GetNet.csproj">
-      <Project>{6AC2815D-009D-4FD5-869A-D0415873D05A}</Project>
-      <Name>GetNet</Name>
+    <ProjectReference Include="..\Entidades\Entidades.csproj">
+      <Project>{69D2533A-433D-4AEF-BAC5-C2C61D4343F8}</Project>
+      <Name>Entidades</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

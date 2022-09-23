@@ -1,0 +1,140 @@
+﻿@model Administrativo.Models.PaisModel.ListaPaisViewModel
+@{
+    ViewBag.Title = "Países";
+}
+
+<div class="container container_page">
+    @if (!string.IsNullOrEmpty(Model.MensagemSucesso))
+    {
+        <div class="alert alert-success">
+            @Model.MensagemSucesso
+        </div>
+    }
+
+    @if (Model.TemErro)
+    {
+        <div class="alert alert-danger">
+            <ul>
+                @foreach (var erro in Model.Erros)
+                {
+                    <li>@erro</li>
+                }
+            </ul>
+        </div>
+    }
+    <div class="row">
+        <div class="col-xs-12" style="display:flex; justify-content:end; margin-bottom:20px;">
+            <a href="/Pais/Manter" class="btn btn-primary col-sm-2">
+                Novo
+            </a>
+        </div>
+    </div>
+    @using (Html.BeginForm("Index", "Pais", FormMethod.Get, htmlAttributes: new { @id = "PaisForm" }))
+    {
+
+        <div class="panel-group">
+            <div class="panel panel-primary" style="margin-bottom:20px;">
+                <div class="panel-heading">Filtro</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-group">
+                                <label>Nome Pais:</label>
+                                @Html.TextBoxFor(m => m.NomePais, htmlAttributes: new
+                               {
+                                   @class = "form-control"
+                               })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12"
+                             style="display:flex; justify-content:end;">
+                            <button class="btn btn-default col-xs-12 col-sm-2"
+                                    style="margin-right:10px;"
+                                    type="button"
+                                    onclick="limparFiltroClick()">
+                                Limpar Filtro
+                            </button>
+
+                            <button class="btn btn-primary col-xs-12 col-sm-2 "
+                                    type="submit">
+                                Filtrar
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Lista de Países
+                </div>
+                <div class="panel-body">
+                    @if (Model.Paises.Count <= 0)
+                    {
+                        <div class="alert alert-warning">
+                            Nenhum Registro encontrado!
+                        </div>
+                    }
+                    else
+                    {
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th style="width:20%;">Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var pais in Model.Paises)
+                                {
+                                    <tr>
+                                        
+                                        <td>
+                                            @pais.NomePais
+                                        </td>
+
+                                        <td>
+                                            @Html.ActionLink(linkText: "Alterar",
+                                                            actionName: "Manter",
+                                                            controllerName: "Pais",
+                                                            routeValues: new
+                                                                 {
+                                                                q = Model.MontarParametroQueryString(pais.IdPais)
+                                                            },
+                                                            htmlAttributes: new
+                                                                 {
+                                                                @class = "btn btn-warning"
+                                                            })
+
+                                            @Html.ActionLink(linkText: "Excluir",
+                                                            actionName: "Excluir",
+                                                            controllerName: "Pais",
+                                                            routeValues: new
+                                                                 {
+                                                                q = Model.MontarParametroQueryString(pais.IdPais)
+                                                            },
+                                                            htmlAttributes: new
+                                                                 {
+                                                                @class = "btn btn-danger"
+                                                            })
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+<script>
+    function limparFiltroClick() {
+        $('[name="NomePais"]').val('');
+        $('#PaisForm').submit();
+    }
+</script>

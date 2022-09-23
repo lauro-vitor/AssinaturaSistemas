@@ -1,0 +1,67 @@
+﻿@model Administrativo.Models.EstadoModel.EstadoViewModel
+@{
+    ViewBag.Title = "Estado";
+}
+
+<h2>Estado</h2>
+
+
+@if (!string.IsNullOrEmpty(Model.MensagemSucesso))
+{
+    <div class="alert alert-success">
+        @Model.MensagemSucesso
+    </div>
+}
+@if (Model.TemErro)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var erro in Model.Erros)
+            {
+                <li>@erro</li>
+            }
+        </ul>
+    </div>
+}
+
+<form action="/Estado/Manter" method="POST">
+
+    @Html.HiddenFor(m => m.Estado.IdEstado)
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>Nome Estado</label>
+                @Html.TextBoxFor(m => m.Estado.NomeEstado, htmlAttributes: new
+                 {
+                    @class = "form-control"
+                 })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>País</label>
+                @Html.DropDownListFor(m => m.Estado.IdPais, Model.GetPaisDropDownList(), htmlAttributes: new
+                {
+                    @class = "form-control"
+                })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 form-buttons-wrapper">
+            <a class="btn btn-default col-xs-12 col-sm-2"
+               href="@Url.Action(actionName:"Index", controllerName:"Estado" )">
+                Voltar
+            </a>
+            &nbsp;&nbsp;&nbsp;
+            <button type="submit" class="btn btn-success col-xs-12 col-sm-2">
+                Salvar
+            </button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,59 @@
+﻿@using AssinaturaSistemasSolution.Models
+
+@model BillingModel
+
+@{
+    Layout = "~/Views/Shared/_StripeLayout.cshtml";
+    ViewBag.Title = "Subscription prices";
+}
+
+<main>
+
+
+    <h1>Select a plan</h1>
+
+    @if (Model.Prices.Count > 0)
+    {
+        foreach (var price in Model.Prices)
+        {
+            <form action="/Subscription/Prices" method="POST">
+                <input type="hidden" name="customerId" value="@Model.CustomerId" />
+
+                <input type="hidden" name="priceId" value="@price.Id" />
+
+                <div>
+                    <span>
+                        @Model.ObterPrecoPlano(price)
+                        <br />
+                        @price.Currency / @price.Recurring.Interval
+                    </span>
+                    <button type="submit">Select</button>
+                </div>
+            </form>
+        }
+    }
+    else
+    {
+        <h3>No prices found</h3>
+
+        <p>This sample requires two prices, one with the lookup_key sample_basic and another with the lookup_key sample_premium</p>
+
+        <p>
+            You can create these through the API or with the Stripe CLI using the provided seed.json fixture file with: <code>stripe fixtures seed.json</code>
+        </p>
+    }
+
+    @if (Model.HasError)
+    {
+        <h2>Erros</h2>
+
+        <div class="alert alert-danger">
+            <ul>
+                @foreach (var messageErro in Model.MessageErros)
+                {
+                    <li>@messageErro</li>
+                }
+            </ul>
+        </div>
+    }
+</main>
