@@ -33,6 +33,8 @@ namespace Util
 
         public static string Decrypt(string EncryptedText)
         {
+            EncryptedText = EncryptedText.Replace(" ", "+");
+
             byte[] inputByteArray = new byte[EncryptedText.Length + 1];
             byte[] rgbIV = { 0x21, 0x43, 0x56, 0x87, 0x10, 0xfd, 0xea, 0x1c };
             byte[] key = { };

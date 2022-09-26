@@ -66,6 +66,7 @@
     <Compile Include="Interfaces\IClienteDAL.cs" />
     <Compile Include="Interfaces\IEstadoDAL.cs" />
     <Compile Include="Interfaces\IPaisDAL.cs" />
+    <Compile Include="Servico\ClienteDAL.cs" />
     <Compile Include="Servico\EstadoDAL.cs" />
     <Compile Include="Servico\PaisDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

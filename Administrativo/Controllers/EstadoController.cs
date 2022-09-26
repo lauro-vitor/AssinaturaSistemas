@@ -148,5 +148,34 @@ namespace Administrativo.Controllers
 
             return View(estadoViewModel);
         }
+
+        [HttpGet]
+        public JsonResult ObterEstadosDoPais(int idPais)
+        {
+            try
+            {
+                HttpContext.Response.StatusCode = 200;
+                var estados = _estadoDAL.Obter()
+                    .Where(e => e.IdPais == idPais)
+                    .OrderBy(e => e.NomeEstado)
+                    .Select(e => new SelectListItem
+                    {
+                        Text = e.NomeEstado,
+                        Value = e.IdEstado.ToString()
+                    });
+
+                return Json(new { 
+                        estados
+                    }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                HttpContext.Response.StatusCode = 500;
+
+                return Json(new { 
+                    mensagem = ex.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

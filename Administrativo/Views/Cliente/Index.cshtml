@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "Clientes";
+}
+<link rel="stylesheet" href="~/Plugins/pagination/pagination.css" />
+
+<div class="container container_page">
+    <div class="panel-group  ">
+        <div style="display:flex; justify-content:end; margin-bottom:15px;">
+            <a href="/Cliente/Manter" class="btn btn-primary col-xs-12 col-sm-2">Novo</a>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading" >
+                Filtro
+            </div>
+            <div id="panelFiltro" class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="form-group">
+                            <label>Nome Empresa</label>
+                            <input id="nomeEmpresa" type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="form-group">
+                            <label>País</label>
+                            <select id="paisDropDownList" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="form-group">
+                            <label>Estado</label>
+                            <select id="estadoDropDownList" class="form-control" disabled>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="form-group">
+                            <label>Código Postal</label>
+                            <input id="codigoPostal" type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <label>Endereço</label>
+                        <input id="endereco" type="text" class="form-control" />
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <label>Data de Cadastro</label>
+                        <div class="input-group">
+                            <input id="dataCadastroInicial" type="date" class="form-control" />
+                            <span class="input-group-addon">Até</span>
+                            <input id="dataCadastroFinal" type="date" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12" style="display:flex; justify-content:end; margin-top:10px;">
+                        <button onclick="limparFiltro()" class="btn btn-default col-xs-12 col-sm-2">Limpar filtro</button> &nbsp; &nbsp;
+                        <button onclick="filtrar()" class="btn btn-primary col-xs-12 col-sm-2">Filtrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" style="margin-top:20px;">
+            <div class="panel-heading">
+                Lista de Clientes
+            </div>
+            <div class="panel-body">
+                <div>
+                    <div class="text-right">
+                        Total: <span id="totalSpan"></span>
+                    </div>
+                    <table id="clientesTable" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nome Empresa</th>
+                                <th>País</th>
+                                <th>Estado</th>
+                                <th>Código Postal</th>
+                                <th>Endereço</th>
+                                <th>Data de Cadastro</th>
+                                <th>Última Atualização</th>
+                                <th>Ativo</th>
+                                <th>Opções</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <div id="pagination" class="pagination"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Plugins/pagination/pagination.min.js"></script>
+    <script src="~/Scripts/Cliente/ListaClientes.js"></script>
+}
+
+
+

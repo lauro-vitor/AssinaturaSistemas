@@ -6,6 +6,9 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="~/Plugins/waitMe/waitMe.min.css" />
+    <link rel="stylesheet" href="~/Plugins/sweetalert/dist/sweetalert2.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/all.min.css" />
 
     <style>
         .spanDropdown {
@@ -24,6 +27,10 @@
         .spanDropdown__caret {
             cursor: pointer;
         }
+
+        .swal2-popup {
+            font-size: 16px !important;
+        }
     </style>
 </head>
 <body>
@@ -40,7 +47,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Clientes", "", "")</li>
+                    <li>@Html.ActionLink("Clientes", "Index", "Cliente")</li>
                     <li class="dropdown">
 
                         <span class="spanDropdown dropdown-toggle" data-toggle="dropdown">
@@ -65,13 +72,18 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <script type="text/javascript" src="~/Plugins/waitMe/waitMe.min.js"></script>
+    <script type="text/javascript" src="~/Plugins/sweetalert/dist/sweetalert2.all.min.js"></script>
+
+    <script type="text/javascript" src="~/Plugins/fontawesome/js/all.min.js"></script>
+
+    <script type="text/javascript" src="~/Scripts/masterPage.js"></script>
+
 </body>
 </html>

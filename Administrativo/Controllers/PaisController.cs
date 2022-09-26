@@ -151,5 +151,37 @@ namespace Administrativo.Controllers
 
             return View("Index", listaPaisModel);
         }
+        [HttpGet]
+        public JsonResult ObterPaises()
+        {
+            try
+            {
+              
+                HttpContext.Response.StatusCode = 200;
+
+                var paises = _paisDAL.Obter()
+                    .OrderBy(p => p.NomePais)
+                    .Select(p => new SelectListItem()
+                    {
+                        Value = p.IdPais.ToString(),
+                        Text = p.NomePais
+                    });
+
+                return Json(new
+                {
+                    paises
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                HttpContext.Response.StatusCode = 500;
+
+                return Json(new
+                {
+                    mensagem = ex.Message
+                }, JsonRequestBehavior.AllowGet);
+
+            }
+        }
     }
 }

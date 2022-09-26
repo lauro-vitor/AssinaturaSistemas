@@ -1,0 +1,137 @@
+﻿@{
+    ViewBag.Title = "Cliente";
+    ViewBag.ManterClienteViewModel = null;
+}
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>Cliente</h2>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div id="mensagensErro" class="alert alert-danger" style="visibility:hidden;">
+
+        </div>
+    </div>
+    <div class="row" >
+
+        <input id="idCliente" type="hidden" />
+
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>
+                    Empresa <span style="color:red;">*</span>
+                </label>
+                <input id="nomeEmpresa"  type="text" class="form-control" />
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>Data Cadastro</label>
+                <input id="dataCadastro" type="date" class="form-control" />
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label style="padding-top:3px;">  Cliente Ativo</label>
+
+                <div style="padding-top:6px;">
+                    Sim <input name="clienteAtivo" type="radio" value="1"  selected="true"/>
+                    Não <input name="clienteAtivo" type="radio" value="0" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>
+                    País <span style="color:red;">*</span>
+                </label>
+                <select id="paisDropDownList" class="form-control">
+                </select>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>
+                    Estado <span style="color:red;">*</span>
+                </label>
+                <select id="estadoDropDownList" class="form-control" disabled="disabled">
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>Código Postal</label>
+                <input id="codigoPostal" type="text" class="form-control" />
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>Endereço</label>
+                <input id="endereco" type="text" class="form-control" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label>Observação</label>
+
+                <textarea id="observacao" class="form-control" cols="20" rows="5">
+                 </textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 form-buttons-wrapper">
+            <a class="btn btn-default col-xs-12 col-sm-2"
+               href="@Url.Action(actionName:"Index", controllerName:"Cliente" )">
+                Voltar
+            </a>
+            &nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-success col-xs-12 col-sm-2" onclick="salvarCliente()">
+                Salvar
+            </button>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+
+    <script type="text/javascript" src="~/Scripts/Cliente/manterCliente.js"></script>
+}
+
+@*<div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Lista de Contatos
+                        </div>
+
+                        <div class="panel-body">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@

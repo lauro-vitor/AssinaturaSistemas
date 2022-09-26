@@ -82,11 +82,10 @@ BEGIN
 		IdCliente INT NOT NULL IDENTITY(1,1),
 		IdEstado INT NOT NULL,
 		NomeEmpresa VARCHAR(255),
-		Telefone VARCHAR(55),
 		Observacao VARCHAR(MAX),
 		Endereco VARCHAR(255),
 		CodigoPostal VARCHAR(20),
-		DataCadastro DATETIME NOT NULL,
+		DataCadastro DATETIME,
 		UltimaAtualizacao DATETIME,
 		Ativo BIT NOT NULL
 	);
@@ -100,4 +99,23 @@ BEGIN
 	CHECK CONSTRAINT [FK_Cliente_Estado]
 	
 END
+GO
 
+CREATE OR ALTER  VIEW  VwListaClientes  
+AS  SELECT   
+ C.IdCliente,  
+ C.NomeEmpresa,  
+ P.IdPais,  
+ P.NomePais,  
+ E.IdEstado,  
+ E.NomeEstado,  
+ C.CodigoPostal,  
+ C.Endereco,  
+ C.DataCadastro,  
+ C.UltimaAtualizacao,  
+ C.Ativo,
+ C.Observacao
+FROM Cliente C  
+INNER JOIN Estado E ON E.IdEstado = C.IdEstado  
+INNER JOIN Pais P ON P.IdPais = E.IdPais  
+GO
