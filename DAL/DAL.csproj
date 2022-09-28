@@ -64,11 +64,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IClienteDAL.cs" />
+    <Compile Include="Interfaces\IContatoDAL.cs" />
     <Compile Include="Interfaces\IEstadoDAL.cs" />
     <Compile Include="Interfaces\IPaisDAL.cs" />
-    <Compile Include="Servico\ClienteDAL.cs" />
-    <Compile Include="Servico\EstadoDAL.cs" />
-    <Compile Include="Servico\PaisDAL.cs" />
+    <Compile Include="Implementacao\ClienteDAL.cs" />
+    <Compile Include="Implementacao\ContatoDAL.cs" />
+    <Compile Include="Implementacao\EstadoDAL.cs" />
+    <Compile Include="Implementacao\PaisDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

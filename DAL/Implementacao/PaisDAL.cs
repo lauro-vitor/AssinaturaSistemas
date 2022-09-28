@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Dapper;
 using System.Transactions;
 
-namespace DAL.Servico
+namespace DAL.Implementacao
 {
     public class PaisDAL : IPaisDAL
     {

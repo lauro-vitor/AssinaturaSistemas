@@ -55,7 +55,15 @@ function carregarClientes() {
             },
             pageSize: 10,
             callback: function (data, pagination) {
-                carregarTabelaClientes(data);
+                if (data.length > 0) {
+                    carregarTabelaClientes(data);
+                    $('#tableWrapperListaClientes').css("display", "block");
+                    $('#tableWrapperListaClientesVazio').css("display", "none");
+                } else {
+                    $('#tableWrapperListaClientes').css("display", "none");
+                    $('#tableWrapperListaClientesVazio').css("display", "block");
+                }
+                   
                 resolve();
             },
             formatAjaxError: function (jqXHR, textStatus, errorThrown) {

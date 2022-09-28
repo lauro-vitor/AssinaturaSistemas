@@ -1,5 +1,5 @@
 ﻿using DAL.Interfaces;
-using DAL.Servico;
+using DAL.Implementacao;
 using Entidades;
 using PagedList;
 using System;

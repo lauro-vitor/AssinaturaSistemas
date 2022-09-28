@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Servico
+namespace DAL.Implementacao
 {
     public class ClienteDAL : IClienteDAL
     {

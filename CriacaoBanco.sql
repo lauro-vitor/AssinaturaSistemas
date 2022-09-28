@@ -75,9 +75,9 @@ BEGIN
 END
 GO
 
-IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE '%Cliente%')
+
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 'Cliente')
 BEGIN
-	
 	CREATE TABLE [Cliente](
 		IdCliente INT NOT NULL IDENTITY(1,1),
 		IdEstado INT NOT NULL,
@@ -87,7 +87,8 @@ BEGIN
 		CodigoPostal VARCHAR(20),
 		DataCadastro DATETIME,
 		UltimaAtualizacao DATETIME,
-		Ativo BIT NOT NULL
+		Ativo BIT NOT NULL,
+		PRIMARY KEY(IdCliente)
 	);
 
 	ALTER TABLE [Cliente]
@@ -98,6 +99,31 @@ BEGIN
 	ALTER TABLE [Cliente] 
 	CHECK CONSTRAINT [FK_Cliente_Estado]
 	
+END
+GO
+
+
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 'Contato')
+BEGIN
+
+	CREATE TABLE Contato(
+		IdContato INT NOT NULL IDENTITY(1,1),
+		IdCliente INT NOT NULL,
+		NomeCompleto VARCHAR(255),
+		Email VARCHAR(255),
+		Celular VARCHAR(50),
+		Telefone VARCHAR(50),
+		Senha VARCHAR(255)
+		PRIMARY KEY(IdContato)
+	);
+
+	ALTER TABLE Contato 
+	WITH CHECK ADD CONSTRAINT FK_Contato_Cliente
+	FOREIGN KEY (IdCliente) 
+	REFERENCES [Cliente](IdCliente);
+
+	ALTER TABLE Contato
+	CHECK CONSTRAINT FK_Contato_Cliente;
 END
 GO
 
@@ -119,3 +145,6 @@ FROM Cliente C
 INNER JOIN Estado E ON E.IdEstado = C.IdEstado  
 INNER JOIN Pais P ON P.IdPais = E.IdPais  
 GO
+
+
+

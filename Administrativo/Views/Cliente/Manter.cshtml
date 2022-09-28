@@ -4,134 +4,281 @@
 }
 
 
+<div class="container" style="margin-top:20px;">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#tabCliente" aria-controls="tabCliente" role="tab" data-toggle="tab">Cliente</a>
+        </li>
+        <li id="liTabContatos" role="presentation" style="visibility: hidden;">
+            <a href="#tabContatos" aria-controls="tabContatos" role="tab" data-toggle="tab">Contatos</a>
+        </li>
+    </ul>
 
-<div class="container">
-    <div class="row">
-        <div class="col-xs-12">
-            <h2>Cliente</h2>
-        </div>
-    </div>
-    <br />
-    <div class="row">
-        <div id="mensagensErro" class="alert alert-danger" style="visibility:hidden;">
+    <div class="tab-content">
 
-        </div>
-    </div>
-    <div class="row" >
 
-        <input id="idCliente" type="hidden" />
+        <div role="tabpanel" class="tab-pane active" id="tabCliente">
+            <div>
+                <div class="row">
+                    <div id="mensagensErro" class="alert alert-danger" style="visibility:hidden;">
 
-        <div class="col-xs-12 col-sm-6">
-            <div class="form-group">
-                <label>
-                    Empresa <span style="color:red;">*</span>
-                </label>
-                <input id="nomeEmpresa"  type="text" class="form-control" />
-            </div>
-        </div>
-
-        <div class="col-xs-12 col-sm-3">
-            <div class="form-group">
-                <label>Data Cadastro</label>
-                <input id="dataCadastro" type="date" class="form-control" />
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-3">
-            <div class="form-group">
-                <label style="padding-top:3px;">  Cliente Ativo</label>
-
-                <div style="padding-top:6px;">
-                    Sim <input name="clienteAtivo" type="radio" value="1"  selected="true"/>
-                    Não <input name="clienteAtivo" type="radio" value="0" />
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
+                <div class="row">
 
-    <div class="row">
-        <div class="col-xs-12 col-sm-6">
-            <div class="form-group">
-                <label>
-                    País <span style="color:red;">*</span>
-                </label>
-                <select id="paisDropDownList" class="form-control">
-                </select>
-            </div>
-        </div>
+                    <input id="idCliente" type="hidden" />
 
-        <div class="col-xs-12 col-sm-6">
-            <div class="form-group">
-                <label>
-                    Estado <span style="color:red;">*</span>
-                </label>
-                <select id="estadoDropDownList" class="form-control" disabled="disabled">
-                </select>
-            </div>
-        </div>
-    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>
+                                Empresa <span style="color:red;">*</span>
+                            </label>
+                            <input id="nomeEmpresa" type="text" class="form-control" />
+                        </div>
+                    </div>
 
-    <div class="row">
-        <div class="col-xs-12 col-sm-6">
-            <div class="form-group">
-                <label>Código Postal</label>
-                <input id="codigoPostal" type="text" class="form-control" />
-            </div>
-        </div>
+                    <div class="col-xs-12 col-sm-3">
+                        <div class="form-group">
+                            <label>Data Cadastro</label>
+                            <input id="dataCadastro" type="date" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-3">
+                        <div class="form-group">
+                            <label style="padding-top:3px;">  Cliente Ativo</label>
 
-        <div class="col-xs-12 col-sm-6">
-            <div class="form-group">
-                <label>Endereço</label>
-                <input id="endereco" type="text" class="form-control" />
-            </div>
-        </div>
-    </div>
+                            <div style="padding-top:6px;">
+                                Sim <input name="clienteAtivo" type="radio" value="1" selected="true" />
+                                Não <input name="clienteAtivo" type="radio" value="0" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="form-group">
-                <label>Observação</label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>
+                                País <span style="color:red;">*</span>
+                            </label>
+                            <select id="paisDropDownList" class="form-control">
+                            </select>
+                        </div>
+                    </div>
 
-                <textarea id="observacao" class="form-control" cols="20" rows="5">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>
+                                Estado <span style="color:red;">*</span>
+                            </label>
+                            <select id="estadoDropDownList" class="form-control" disabled="disabled">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Código Postal</label>
+                            <input id="codigoPostal" type="text" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Endereço</label>
+                            <input id="endereco" type="text" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>Observação</label>
+
+                            <textarea id="observacao" class="form-control" cols="20" rows="5">
                  </textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12 form-buttons-wrapper">
+                        <a class="btn btn-default col-xs-12 col-sm-2"
+                           href="@Url.Action(actionName:"Index", controllerName:"Cliente" )">
+                            Voltar
+                        </a>
+                        &nbsp;&nbsp;&nbsp;
+                        <button type="button" class="btn btn-success col-xs-12 col-sm-2" onclick="salvarCliente()">
+                            Salvar
+                        </button>
+                    </div>
+                </div>
+
+
             </div>
+
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-xs-12 form-buttons-wrapper">
-            <a class="btn btn-default col-xs-12 col-sm-2"
-               href="@Url.Action(actionName:"Index", controllerName:"Cliente" )">
-                Voltar
-            </a>
-            &nbsp;&nbsp;&nbsp;
-            <button type="button" class="btn btn-success col-xs-12 col-sm-2" onclick="salvarCliente()">
-                Salvar
-            </button>
-        </div>
-    </div>
-</div>
+        <div role="tabpanel" class="tab-pane" id="tabContatos" style="visibility:hidden;">
+            <div class="row" style="padding-top:20px;">
+                <div class="col-xs-12">
+                    <div style="display:flex; justify-content:end; padding-bottom:10px;">
+                        <button class="btn btn-primary" onclick="contato_novoButtonClick()">Novo</button>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="panel-group">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                Filtro
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="form-group">
+                                            <label>Nome</label>
+                                            <input id="contato_filtro_nome" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="form-group">
+                                            <label>E-mail</label>
+                                            <input id="contato_filtro_email" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="form-group">
+                                            <label>Celular</label>
+                                            <input id="contao_filtro_celular" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="form-group">
+                                            <label>Telefone</label>
+                                            <input id="contato_filtro_telfone" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div style="display:flex; justify-content:end;">
+                                            <button onclick="contato_limparFiltroClick()" class="btn btn-default col-xs-12 col-sm-2">Limpar Filtro</button> &nbsp;&nbsp;
+                                            <button onclick="contato_filtroClick()" class="btn btn-primary col-xs-12 col-sm-2">Filtrar</button>
+                                        </div>
+                                    </div>
+                                </div>
 
-
-@section scripts{
-
-    <script type="text/javascript" src="~/Scripts/Cliente/manterCliente.js"></script>
-}
-
-@*<div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="panel-group">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Lista de Contatos
+                            </div>
                         </div>
-
-                        <div class="panel-body">
-
+                        <div class="panel panel-default" style="margin-top:20px;">
+                            <div class="panel-heading"> Lista de Contatos</div>
+                            <div class="panel-body">
+                                <div style="display:flex; justify-content:end;">
+                                    <b>Total:</b>&nbsp;<span id="contato_total_registros"></span>
+                                </div>
+                                <div id="contato_tabelaContainer" style="display:none;">
+                                    <table id="contatosTable" class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Nome</th>
+                                                <th>E-mail</th>
+                                                <th>Celular</th>
+                                                <th>Telefone</th>
+                                                <th>Opções</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="contato_mensagemVazio" style="display:none;" class="alert alert-warning">
+                                    Nehum contato registrado!
+                                </div>
+                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
-    </div>*@
+
+    </div>
+
+</div>
+
+<div id="contatoModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Contato</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <input id="contato_modal_idContato" type="hidden" />
+                    <input id="contato_modal_idCliente" type="hidden" />
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-group">
+                                <label>Nome</label>
+                                <input id="contato_modal_nome" type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-group">
+                                <label>E-mail</label>
+                                <input id="contato_modal_email" type="email" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-group">
+                                <label>Celular</label>
+                                <input id="contato_modal_celular" type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-group">
+                                <label>Telefone</label>
+                                <input id="contato_modal_telefone" type="text" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-group">
+                                <label>Senha</label>
+                                <input id="contato_modal_senha" type="text" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div id="contato_modal_mensagemSucesso" class="alert alert-success" style="display:none;">
+
+                            </div>
+                            <div id="contato_modal_mensagemErro" class="alert alert-danger" style="display:none;">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">Fechar</button>
+                <button class="btn btn-success" onclick="contato_modal_salvarButtonClick()">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script type="text/javascript" src="~/Scripts/Cliente/manterCliente.js"></script>
+    <script type="text/javascript" src="~/Scripts/Contatos/ListaContatos.js"></script>
+}
+

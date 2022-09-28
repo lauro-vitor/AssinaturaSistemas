@@ -2,7 +2,7 @@
 using Administrativo.Models.PaisModel;
 using BLL;
 using DAL.Interfaces;
-using DAL.Servico;
+using DAL.Implementacao;
 using Entidades;
 using System;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ namespace Administrativo.Controllers
             try
             {
                 listaPaisModel.Paises = _paisDAL.Obter()
-                    .Where(p => string.IsNullOrEmpty(nomePais) || p.NomePais.Contains(nomePais))
+                    .Where(p => string.IsNullOrEmpty(nomePais) || p.NomePais.ToLower().Contains(nomePais.ToLower()))
                     .OrderBy(p => p.NomePais)
                     .ToList();
             }

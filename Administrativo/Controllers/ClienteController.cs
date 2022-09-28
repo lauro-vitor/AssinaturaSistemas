@@ -1,7 +1,7 @@
 ﻿using Administrativo.Models.ClienteModel;
 using BLL;
 using DAL.Interfaces;
-using DAL.Servico;
+using DAL.Implementacao;
 using Entidades;
 using System;
 using System.Collections.Generic;

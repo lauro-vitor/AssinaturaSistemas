@@ -1,7 +1,7 @@
 ﻿using Administrativo.Models.EstadoModel;
 using BLL;
 using DAL.Interfaces;
-using DAL.Servico;
+using DAL.Implementacao;
 using System;
 using System.Collections.Generic;
 using System.Linq;
