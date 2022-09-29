@@ -135,6 +135,7 @@
     <Compile Include="Controllers\ContatoController.cs" />
     <Compile Include="Controllers\EstadoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Models\BaseManterViewModel.cs" />
     <Compile Include="Controllers\PaisController.cs" />
     <Compile Include="Global.asax.cs">
@@ -2362,6 +2363,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Plugins\waitMe\waitMe.min.js" />
     <Content Include="Scripts\masterPage.js" />
+    <Content Include="Scripts\Usuario\appUsuario.js" />
     <Content Include="System.Web.dll" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -2383,10 +2385,10 @@
     <Content Include="Views\Estado\Manter.cshtml" />
     <Content Include="Views\Cliente\Index.cshtml" />
     <Content Include="Views\Cliente\Manter.cshtml" />
+    <Content Include="Views\Usuario\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Contato\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

@@ -27,6 +27,22 @@ const exibirAlert = {
             text: mensagem
         });
     },
+    mensagemErroAjax: function (jqXhr) {
+
+        let mensagem = "Ocorreu algum erro";
+
+        if (jqXhr.responseJSON) {
+            mensagem = jqXhr.responseJSON.erros.join(", ");
+        } else if (jqXhr) {
+            mensagem = jqXhr.responseText;
+        }
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops ...',
+            text: mensagem
+        });
+    },
     mensagemSucesso: function (mensagem) {
         Swal.fire({
             icon: 'success',
@@ -44,14 +60,13 @@ const exibirAlert = {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Confirmar',
-            cancelButtonText:'Cancelar'
+            cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
                 callbackAposConfirmacao();
             }
         })
     }
-
 }
 
 const dropdownList = {
@@ -71,4 +86,34 @@ const dropdownList = {
         });
     }
 
+}
+
+const Modal = {
+    exibirMensagemErro: function (mensagens) {
+        $("#modal_mensagem_container").empty();
+
+        const ul = $("<ul></ul>");
+
+        mensagens.map(mensagem => {
+            ul.append(`<li>${mensagem}</li>`);
+        });
+
+        let alert = $(`<div class='alert alert-danger'></div>`).append(ul);
+
+        $("#modal_mensagem_container")
+            .append($("<div class='col-xs-12'></div>").append(alert));
+
+    },
+
+    exibirMensagemSucesso: function (mensagem) {
+        $("#modal_mensagem_container").empty();
+
+        let alert = $(`<div class='alert alert-success'></div>`).text(mensagem);
+
+        $("#modal_mensagem_container")
+            .append($("<div class='col-xs-12'></div>").append(alert));
+    },
+    limparMensagens() {
+        $("#modal_mensagem_container").empty();
+    }
 }

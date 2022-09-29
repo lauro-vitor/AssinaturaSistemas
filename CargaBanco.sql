@@ -35,3 +35,17 @@ BEGIN
 END
 GO
 
+IF NOT EXISTS(SELECT * FROM [Usuario])
+BEGIN
+	INSERT INTO [dbo].[Usuario]
+           ([NomeCompleto]
+           ,[Email]
+           ,[Senha]
+           ,[Desabilitado])
+     VALUES
+           ('system'
+           ,'system'
+           ,'admin'
+           ,0)
+END
+GO

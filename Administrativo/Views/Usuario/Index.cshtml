@@ -1,0 +1,135 @@
+﻿@{ 
+    ViewBag.title = "Usuários";
+}
+<div class="container" style="margin-top:20px;">
+    <div class="row">
+        <div class="col-xs-12 " style="margin-bottom:15px;">
+            <div style="display:flex; justify-content:end;">
+                <button id="usuario_novo_button" class="btn btn-primary" onclick="usuario_novo_button_click()">Novo</button>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            Filtro
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-12  col-sm-6">
+                    <div class="form-group">
+                        <label>Nome</label>
+                        <input id="usuario_filtro_nome" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <input id="usuario_filtro_email" type="text" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div style="display:flex; justify-content:end;">
+                        <button onclick="usuario_filtro_limparButton_click()" class="btn btn-default col-xs-12 col-sm-2">Limpar filtro</button> &nbsp;;&nbsp;
+                        <button onclick="usuario_filtro_button_click()" class="btn btn-primary col-xs-12 col-sm-2">Filtrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Lista de Usuários
+            </div>
+            <div class="panel-body">
+
+                <div id="usuario_tabelaContainer" style="display:none;">
+                    <div style="display:flex; justify-content:end;">
+                        <b>Total:</b> <span id="usuario_total"></span>
+                    </div>
+                    <table id="usuario_tabela" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>E-mail</th>
+                                <th>Habilitado</th>
+                                <th>Opções</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div id="usuario_tabelaSemRegistro" style="display:none;">
+                    <div class="alert alert-warning">
+                        Nehum registro encontrado
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="usuario_modal" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Usuário</h4>
+            </div>
+            <div class="modal-body">
+                <input  id="usuario_modal_idUsuario" type="hidden" />
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Nome <span>*</span> </label>
+                            <input id="usuario_modal_nome" type="text" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>E-mail <span>*</span></label>
+                            <input id="usuario_modal_email" type="email" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Senha <span>*</span></label>
+                            <input id="usuario_modal_senha" type="password" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="checkbox">
+                            <label>
+                                <input id="usuario_modal_habilitado" type="checkbox" /> Habilitado
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="modal_mensagem_container">
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div style="display:flex;justify-content:end;">
+                    <button class="btn btn-default col-xs-12 col-sm-2" data-dismiss="modal">Voltar</button>
+                    &nbsp;&nbsp;
+                    <button onclick="usuario_modal_salvar_button_click()" class="btn btn-success col-xs-12 col-sm-2"> Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Usuario/appUsuario.js"></script>
+}

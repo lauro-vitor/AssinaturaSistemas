@@ -48,6 +48,7 @@
     <Compile Include="PaisBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TelefoneBLL.cs" />
+    <Compile Include="UsuarioBLL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Entidades\Entidades.csproj">

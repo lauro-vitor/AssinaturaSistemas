@@ -63,8 +63,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementacao\DAL.cs" />
+    <Compile Include="Implementacao\UsuarioDAL.cs" />
     <Compile Include="Interfaces\IClienteDAL.cs" />
     <Compile Include="Interfaces\IContatoDAL.cs" />
+    <Compile Include="Interfaces\IDAL.cs" />
     <Compile Include="Interfaces\IEstadoDAL.cs" />
     <Compile Include="Interfaces\IPaisDAL.cs" />
     <Compile Include="Implementacao\ClienteDAL.cs" />
