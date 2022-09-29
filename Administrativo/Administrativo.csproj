@@ -131,11 +131,15 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\ContatoController.cs" />
     <Compile Include="Controllers\EstadoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
+    <Compile Include="Filters\AccountFilter.cs" />
+    <Compile Include="Infraestructure\Abstract\IAuthProvider.cs" />
+    <Compile Include="Infraestructure\Concrete\FormsAuthProvider.cs" />
     <Compile Include="Models\BaseManterViewModel.cs" />
     <Compile Include="Controllers\PaisController.cs" />
     <Compile Include="Global.asax.cs">
@@ -2386,6 +2390,7 @@
     <Content Include="Views\Cliente\Index.cshtml" />
     <Content Include="Views\Cliente\Manter.cshtml" />
     <Content Include="Views\Usuario\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

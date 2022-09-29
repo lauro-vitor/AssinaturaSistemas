@@ -7,9 +7,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BLL;
+using Administrativo.Filters;
 
 namespace Administrativo.Controllers
 {
+    [AccountFilter]
+    [Authorize]
     public class ContatoController : Controller
     {
         private readonly IContatoDAL _contatoDAL;

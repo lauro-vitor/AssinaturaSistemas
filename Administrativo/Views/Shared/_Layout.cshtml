@@ -31,6 +31,14 @@
         .swal2-popup {
             font-size: 16px !important;
         }
+
+        .spanUsuarioEmail {
+            color: #9d9d9d;
+        }
+
+            .spanUsuarioEmail:hover {
+                color: white;
+            }
     </style>
 </head>
 <body>
@@ -66,6 +74,20 @@
                         </ul>
                     </li>
                 </ul>
+
+                <ul class="nav navbar-nav pull-right">
+
+                    <li class="dropdown">
+                        <span class="spanDropdown dropdown-toggle" data-toggle="dropdown">
+                            <span class="spanUsuarioEmail">@ViewBag.UsuarioEmail</span>
+                            <span class="caret spanDropdown__caret"></span>
+                        </span>
+                        <ul class="dropdown-menu">
+                            <li> <a href="/Account/LogOut">Log Out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
             </div>
         </div>
     </div>

@@ -1,4 +1,5 @@
-﻿using BLL;
+﻿using Administrativo.Filters;
+using BLL;
 using DAL.Implementacao;
 using Entidades;
 using System;
@@ -9,11 +10,14 @@ using System.Web.Mvc;
 
 namespace Administrativo.Controllers
 {
+    [AccountFilter]
+    [Authorize]
     public class UsuarioController : Controller
     {
         private readonly UsuarioDAL _usuarioDAL;
         public UsuarioController()
         {
+          
             _usuarioDAL = new UsuarioDAL();
         }
         // GET: Usuario

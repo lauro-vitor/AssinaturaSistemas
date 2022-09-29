@@ -10,8 +10,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Util;
+using Administrativo.Filters;
+
 namespace Administrativo.Controllers
 {
+    [AccountFilter]
+    [Authorize]
     public class PaisController : Controller
     {
         private readonly IPaisDAL _paisDAL;
