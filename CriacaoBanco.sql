@@ -159,3 +159,45 @@ BEGIN
 	)
 END
 
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 'TipoSistema')
+BEGIN
+	CREATE TABLE TipoSistema(
+		IdTipoSistema INT NOT NULL IDENTITY(1,1),
+		Descricao VARCHAR(255),
+		PRIMARY KEY(IdTipoSistema)
+	)
+END
+
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 'Sistema')
+BEGIN
+	
+		CREATE TABLE Sistema(
+		IdSistema INT NOT NULL IDENTITY(1,1),
+		IdCliente INT NOT NULL,
+		IdTipoSistema INT NOT NULL,
+		DominioProvisorio VARCHAR(255),
+		Dominio VARCHAR(255),
+		Pasta VARCHAR(255),
+		BancoDeDados VARCHAR(255),
+		Ativo BIT NOT NULL,
+		DataInicio DATETIME NOT NULL,
+		DataCancelamento DATETIME,
+		PRIMARY KEY(IdSistema)
+		);
+
+	ALTER TABLE Sistema
+	WITH CHECK ADD CONSTRAINT FK_Sistema_Cliente
+	FOREIGN KEY(IdCliente) 
+	REFERENCES [dbo].Cliente([IdCliente])
+
+	ALTER TABLE Sistema
+	CHECK CONSTRAINT FK_Sistema_Cliente
+
+	ALTER TABLE Sistema
+	WITH CHECK ADD CONSTRAINT FK_Sistema_TipoSistema
+	FOREIGN KEY (IdTipoSistema)
+	REFERENCES [dbo].TipoSistema([IdTipoSistema])
+
+	ALTER TABLE Sistema
+	CHECK CONSTRAINT FK_Sistema_TipoSistema
+END

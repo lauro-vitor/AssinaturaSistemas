@@ -136,6 +136,7 @@
     <Compile Include="Controllers\ContatoController.cs" />
     <Compile Include="Controllers\EstadoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SistemaController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Filters\AccountFilter.cs" />
     <Compile Include="Infraestructure\Abstract\IAuthProvider.cs" />
@@ -150,6 +151,7 @@
     <Compile Include="Models\EstadoModel\ListaEstadoViewModel.cs" />
     <Compile Include="Models\PaisModel\ListaPaisViewModel.cs" />
     <Compile Include="Models\PaisModel\PaisViewModel.cs" />
+    <Compile Include="Models\SistemaModel\SistemaViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -2367,6 +2369,8 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Plugins\waitMe\waitMe.min.js" />
     <Content Include="Scripts\masterPage.js" />
+    <Content Include="Scripts\Sistema\appListaSistemas.js" />
+    <Content Include="Scripts\Sistema\appManterSistema.js" />
     <Content Include="Scripts\Usuario\appUsuario.js" />
     <Content Include="System.Web.dll" />
     <Content Include="Web.config" />
@@ -2391,6 +2395,8 @@
     <Content Include="Views\Cliente\Manter.cshtml" />
     <Content Include="Views\Usuario\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Sistema\Manter.cshtml" />
+    <Content Include="Views\Sistema\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

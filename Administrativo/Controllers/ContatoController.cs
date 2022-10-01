@@ -29,12 +29,12 @@ namespace Administrativo.Controllers
         [HttpPost]
         public JsonResult Criar(Contato contato)
         {
-
+            
             try
             {
                 var contatoBLL = new ContataoBLL();
 
-                var contatos = _contatoDAL.ObterVarios(nomeCompleto: "", email: "", celular: "", telefone: "");
+                var contatos = _contatoDAL.ObterVarios(c => true);
 
                 var erros = contatoBLL.ValidarContato(contato.IdContato, contato.IdCliente, contato.NomeCompleto, contato.Email,
                     contato.Celular, contato.Telefone, contato.Senha, contatos);
@@ -82,7 +82,7 @@ namespace Administrativo.Controllers
             {
                 var contatoBLL = new ContataoBLL();
 
-                var contatos = _contatoDAL.ObterVarios(nomeCompleto: "", email: "", celular: "", telefone: "");
+                var contatos = _contatoDAL.ObterVarios(c => true);
 
                 var erros = contatoBLL.ValidarContato(contato.IdContato, contato.IdCliente, contato.NomeCompleto, contato.Email,
                     contato.Celular, contato.Telefone, contato.Senha, contatos);
@@ -151,14 +151,18 @@ namespace Administrativo.Controllers
         }
 
         [HttpGet]
-        public JsonResult ObterVarios(string nomeCompleto, string email, string celular, string telefone, int page, int pageSize)
+        public JsonResult ObterVarios(int idCliente, string nomeCompleto, string email, string celular, string telefone, int page, int pageSize)
         {
             try
             {
               
                 int total = 0;
 
-                var contatosAux = _contatoDAL.ObterVarios(nomeCompleto, email, celular, telefone);
+                var contatosAux = _contatoDAL.ObterVarios(c => c.IdCliente == idCliente &&
+                    (string.IsNullOrEmpty(nomeCompleto) || c.NomeCompleto.ToLower().Contains(nomeCompleto.ToLower().Trim())) &&
+                    (string.IsNullOrEmpty(email) || c.Email.ToLower().Contains(email.ToLower().Trim())) &&
+                    (string.IsNullOrEmpty(celular) || c.Celular.ToLower().Contains(celular.ToLower().Trim())) &&
+                    (string.IsNullOrEmpty(telefone) || c.Telefone.ToLower().Contains(telefone.ToLower().Trim())));
 
                 total = contatosAux.Count();
 

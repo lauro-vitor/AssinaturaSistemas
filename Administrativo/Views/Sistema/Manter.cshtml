@@ -1,0 +1,85 @@
+﻿@{ 
+    ViewBag.Title = "Sistema";
+}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-4" style="margin:15px 0;">
+        <h2>Sistema</h2>
+    </div>
+</div>
+
+<div class="row">
+    <input id="idSistemaHidden" type="hidden"  />
+    <div class="col-xs-12 col-sm-4">
+        <div class="form-group">
+            <label>Cliente</label>
+            <select id="clienteDropDownList" class="form-control">
+            </select>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <div class="form-group">
+            <label>Tipo Sistema</label>
+            <select id="tipoSistemaDropDownlist" class="form-control">
+            </select>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <div class="form-group">
+            <label>Domínio</label>
+            <input id="dominioTextBox" type="text" class="form-control" />
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <div class="form-group">
+            <label>Domínio Provisório</label>
+            <input id="dominioProvisorioTextBox" type="text" class="form-control" />
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <div class="form-group">
+            <label>Pasta</label>
+            <input id="pastaTextBox" type="text" class="form-control" />
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <div class="form-group">
+            <label>Banco de Dados</label>
+            <input id="bancoDeDadosTextBox" type="text" class="form-control" />
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <div class="form-group">
+            <label>Data Início</label>
+            <input id="dataInicioTextBox" type="date" class="form-control" />
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+        <div class="form-group">
+            <label>Data Cancelamento</label>
+            <input id="dataCancelamentoTextBox" type="date" class="form-control" />
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4" style="padding-left:30px;">
+        <div class="form-group">
+            <label class="checkbox">
+
+                <input id="ativoCheckBox" type="checkbox" />
+                Sistema Ativo
+            </label>
+           
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-top:20px;">
+    <div class="col-xs-12">
+        <div style="display:flex; justify-content:center;">
+            <button onclick="window.history.back()" class="btn btn-default col-xs-12 col-sm-2">Voltar</button> &nbsp;&nbsp; &nbsp;
+            <button onclick="salvarSistemaClick()" class="btn btn-success col-xs-12 col-sm-2">Salvar</button>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Sistema/appManterSistema.js"></script>
+}

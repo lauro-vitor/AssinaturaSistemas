@@ -17,7 +17,7 @@ namespace Administrativo.Controllers
     [Authorize]
     public class ClienteController : Controller
     {
-     
+
         private readonly IClienteDAL _clienteDAL;
         private readonly IPaisDAL _paisDAL;
         private readonly IEstadoDAL _estadoDAL;
@@ -248,15 +248,51 @@ namespace Administrativo.Controllers
 
                 return Json(new { });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(new
                 {
                     mensagem = ex.Message
                 });
             }
-           
+
         }
 
+
+        [HttpGet]
+        public JsonResult ObterClientesDropDownList()
+        {
+            try
+            {
+                var clientes = _clienteDAL
+                    .ObterVarios(c => true)
+                    .Select(c => new SelectListItem
+                    {
+                        Value = c.IdCliente.ToString(),
+                        Text = c.NomeEmpresa
+                    });
+
+                HttpContext.Response.StatusCode = 200;
+
+                return Json(new
+                {
+                    clientes
+                }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                HttpContext.Response.StatusCode = 500;
+
+                return Json(new
+                {
+                    erros = new List<string>()
+                    {
+                        ex.Message
+                    }
+
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

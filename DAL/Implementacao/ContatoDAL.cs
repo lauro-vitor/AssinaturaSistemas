@@ -169,7 +169,7 @@ namespace DAL.Implementacao
             return contato;
         }
 
-        public List<Contato> ObterVarios(string nomeCompleto, string email, string celular, string telefone)
+        public List<Contato> ObterVarios(Func<Contato, bool> filtro)
         {
             _sqlConnection.Open();
 
@@ -179,10 +179,7 @@ namespace DAL.Implementacao
 
 
             var contatos = contatosAux
-                .Where(c => (string.IsNullOrEmpty(nomeCompleto) || c.NomeCompleto.ToLower().Contains(nomeCompleto.ToLower().Trim())) &&
-                    (string.IsNullOrEmpty(email) || c.Email.ToLower().Contains(email.ToLower().Trim())) &&
-                    (string.IsNullOrEmpty(celular) || c.Celular.ToLower().Contains(celular.ToLower().Trim())) &&
-                    (string.IsNullOrEmpty(telefone) || c.Telefone.ToLower().Contains(telefone.ToLower().Trim())))
+                .Where(filtro)
                 .ToList();
 
             _sqlConnection.Close();

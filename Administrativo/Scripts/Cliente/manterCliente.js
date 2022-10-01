@@ -130,11 +130,13 @@ function salvarCliente() {
             url: "/Cliente/SalvarCliente",
             contentType: "application/json",
             data: JSON.stringify(cliente),
-            success: function (jqXhr) {
+            success: async function (jqXhr) {
                 const clienteResponse = jqXhr.cliente;
                 $("#idCliente").val(clienteResponse.IdCliente);
+                await contato_ajax_obterVarios();
                 exibirListaDeContatos();
                 esconderMensagensErro();
+               
                 exibirAlert.mensagemSucesso(jqXhr.mensagem);
             },
             error: function (jqXhr) {
@@ -258,6 +260,7 @@ function esconderListaDeContatos() {
 //#region CONTATO_AJAX
 function contato_ajax_obterVarios() {
     const contatoFiltro = {
+        idCliente:0,
         nomeCompleto: "",
         email: "",
         celular: "",
@@ -265,7 +268,7 @@ function contato_ajax_obterVarios() {
         page: 1,
         pageSize: 10
     };
-
+    contatoFiltro.idCliente = parseInt($("#idCliente").val());
     contatoFiltro.nomeCompleto = $("#contato_filtro_nome").val();
     contatoFiltro.email = $("#contato_filtro_email").val();
     contatoFiltro.celular = $("#contao_filtro_celular").val();
@@ -357,8 +360,12 @@ function contato_carregarTabela(resposta) {
     const total = resposta.total;
 
     if (total <= 0) {
+        $("#contato_tabelaContainer").css("display", "none");
         $("#contato_mensagemVazio").css("display", "block");
         return;
+    } else {
+        $("#contato_tabelaContainer").css("display", "block");
+        $("#contato_mensagemVazio").css("display", "none");
     }
 
     $("#contato_total_registros").text(total);
@@ -397,7 +404,7 @@ function contato_carregarTabela(resposta) {
         table.append($(trHtml).append(tdOpcoes));
     });
 
-    $("#contato_tabelaContainer").css("display", "block");
+    ;
 }
 
 async function contato_editarClick(idContato) {

@@ -49,3 +49,19 @@ BEGIN
            ,0)
 END
 GO
+
+IF NOT EXISTS(SELECT * FROM [TipoSistema])
+BEGIN
+	BEGIN TRAN
+	SET IDENTITY_INSERT [TipoSistema] ON
+
+		INSERT INTO [TipoSistema] (IdTipoSistema, Descricao)
+		VALUES(1,'Fabricante'),
+		(2,'Distribuidor'),
+		(3,'Exportador')
+
+	SET IDENTITY_INSERT [TipoSistema] OFF
+
+	COMMIT TRAN
+END
+GO

@@ -12,8 +12,12 @@ namespace DAL.Interfaces
         void Alterar(Cliente cliente);
         Cliente ObterPorId(int idCliente);
         void Deletar(int idCliente);
+        List<Cliente> ObterVarios(Func<Cliente, bool> filtro);
+
         List<VwListaClientes> ObterVwListaClientes(string nomeEmpresa, int idPais, int idEstado,
             string codigoPostal, string endereco, string dataCadastroInicial, string dataCadastroFinal,
             bool? ativo);
+
+
     }
 }

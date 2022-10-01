@@ -158,6 +158,21 @@ namespace DAL.Implementacao
             return cliente;
         }
 
+        public List<Cliente> ObterVarios(Func<Cliente,bool> filtro)
+        {
+            List<Cliente> clientes = new List<Cliente>();
+
+            _sqlConnection.Open();
+
+            string sql = "SELECT * FROM Cliente";
+
+            clientes = _sqlConnection.Query<Cliente>(sql).Where(filtro).ToList();
+                
+            _sqlConnection.Close();
+
+            return clientes;
+        }
+
         public List<VwListaClientes> ObterVwListaClientes(string nomeEmpresa, int idPais, int idEstado, string codigoPostal, string endereco, string dataCadastroInicial, string dataCadastroFinal, bool? ativo)
         {
             List<VwListaClientes> vwListaClientes = new List<VwListaClientes>();
