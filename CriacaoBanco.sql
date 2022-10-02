@@ -201,3 +201,137 @@ BEGIN
 	ALTER TABLE Sistema
 	CHECK CONSTRAINT FK_Sistema_TipoSistema
 END
+
+--financeiro
+
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 'ContaBancaria')
+BEGIN
+	CREATE TABLE ContaBancaria(
+		IdContaBancaria INT NOT NULL IDENTITY(1,1),
+	    NumeroAgencia VARCHAR(50) NOT NULL,
+		NumeroConta VARCHAR(50) NOT NULL,
+		NumeroBanco INT NOT NULL,
+		NomeBanco VARCHAR(100) NOT NULL,
+		Cnpj VARCHAR(50),
+		PRIMARY KEY(IdContaBancaria)
+	);
+END
+
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 'PeriodoCobranca')
+BEGIN
+	CREATE TABLE PeriodoCobranca(
+		IdPeriodoCobranca  INT NOT NULL,
+		Descricao VARCHAR(255),
+		PRIMARY KEY(IdPeriodoCobranca)
+	);
+END
+
+IF NOT EXISTS(SELECT * FROM [PeriodoCobranca])
+BEGIN
+	INSERT INTO [PeriodoCobranca](IdPeriodoCobranca, Descricao)
+	VALUES 
+		(1,'MENSAL'),
+		(2,'SEMESTRAL'),
+		(3,'ANUAL');
+END
+
+
+--SERVICO FINANCEIRO
+
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 'ServicoFinanceiro')
+BEGIN
+	CREATE TABLE ServicoFinanceiro(
+		IdServicoFinanceiro INT NOT NULL IDENTITY(1,1),
+		IdContaBancaria INT NOT NULL,
+		IdPeriodoCobranca INT NOT NULL,
+		DescricaoServico VARCHAR(255) NOT NULL,
+		DiaVencimento INT NOT NULL,
+		ValorCobranca DECIMAL NOT NULL,
+		QuantidadeParcelas INT NOT NULL
+		PRIMARY KEY(IdServicoFinanceiro)
+	);
+
+	ALTER TABLE ServicoFinanceiro
+	WITH CHECK ADD CONSTRAINT FK_ServicoFinanceiro_ContaBancaria
+	FOREIGN KEY(IdContaBancaria)
+	REFERENCES [dbo].ContaBancaria(IdContaBancaria)
+
+	ALTER TABLE ServicoFinanceiro
+	CHECK CONSTRAINT FK_ServicoFinanceiro_ContaBancaria
+
+	ALTER TABLE ServicoFinanceiro
+	WITH CHECK ADD CONSTRAINT FK_ServicoFinanceiro_PeriodoCobranca
+	FOREIGN KEY (IdPeriodoCobranca)
+	REFERENCES [dbo].[PeriodoCobranca](IdPeriodoCobranca)
+
+	ALTER TABLE ServicoFinanceiro
+	CHECK CONSTRAINT FK_ServicoFinanceiro_PeriodoCobranca
+
+END
+
+
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 'StatusParcela')
+BEGIN
+	CREATE TABLE StatusParcela(
+		IdStatusParcela INT NOT NULL,
+		Descricao VARCHAR(255),
+		PRIMARY KEY(IdStatusParcela)
+	);
+END
+
+
+IF NOT EXISTS (SELECT * FROM [StatusParcela])
+BEGIN
+	INSERT INTO StatusParcela
+	VALUES 
+		(1,'ABERTO'),
+		(2,'PAGO'),
+		(3,'GRATUITO'),
+		(4,'CANCELADO');
+END
+
+
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 'Parcela')
+BEGIN
+	CREATE TABLE Parcela(
+		IdParcela INT NOT NULL IDENTITY(1,1),
+		IdSistema INT NOT NULL,
+		IdServicoFinanceiro INT NOT NULL,
+		IdStatusParcela INT NOT NULL,
+		DataGeracao DATETIME NOT NULL,
+		DataVencimento DATETIME NOT NULL,
+		DataCancelamento DATETIME NULL,
+		Valor DECIMAL NOT NULL,
+		Desconto DECIMAL NULL,
+		Acrescimo DECIMAL NULL,
+		Observacao VARCHAR(MAX)
+	);
+
+	ALTER TABLE Parcela
+	WITH CHECK ADD CONSTRAINT FK_Parcela_Sistema
+	FOREIGN KEY(IdSistema)
+	REFERENCES [dbo].[Sistema](IdSistema);
+	
+	ALTER TABLE Parcela
+	CHECK CONSTRAINT FK_Parcela_Sistema;
+
+	ALTER TABLE Parcela
+	WITH CHECK ADD CONSTRAINT FK_Parcela_ServicoFinanceiro
+	FOREIGN KEY (IdServicoFinanceiro)
+	REFERENCES [dbo].[ServicoFinanceiro](IdServicoFinanceiro)
+
+	ALTER TABLE Parcela
+	CHECK CONSTRAINT FK_Parcela_ServicoFinanceiro;
+
+	ALTER TABLE Parcela
+    WITH CHECK ADD CONSTRAINT FK_Parcela_StatusParcela
+	FOREIGN KEY (IdStatusParcela)
+	REFERENCES [dbo].[StatusParcela](IdStatusParcela);
+
+	ALTER TABLE Parcela
+	CHECK CONSTRAINT FK_Parcela_StatusParcela;
+
+END
+
+
+

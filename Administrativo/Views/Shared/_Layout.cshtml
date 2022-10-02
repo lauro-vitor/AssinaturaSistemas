@@ -54,8 +54,6 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Usuários", "Index", "Usuario")</li>
-                    <li>@Html.ActionLink("Clientes", "Index", "Cliente")</li>
                     <li class="dropdown">
 
                         <span class="spanDropdown dropdown-toggle" data-toggle="dropdown">
@@ -73,7 +71,29 @@
                             </li>
                         </ul>
                     </li>
-                    <li>@Html.ActionLink("Sistemas","Index","Sistema")</li>
+                    <li>@Html.ActionLink("Clientes", "Index", "Cliente")</li>
+
+                    <li class="dropdown">
+                        <span class="spanDropdown dropdown-toggle" data-toggle="dropdown">
+                            Financeiro
+                            <span class="caret spanDropdown__caret"></span>
+                        </span>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/ContaBancaria/">Conta Bancária</a>
+                            </li>
+                            <li>
+                                <a href="#">Serviço Financeiro</a>
+                            </li>
+                            <li>
+                                <a href="#">Ficha Financeira</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>@Html.ActionLink("Sistemas", "Index", "Sistema")</li>
+
+                    <li>@Html.ActionLink("Usuários", "Index", "Usuario")</li>
                 </ul>
 
                 <ul class="nav navbar-nav pull-right">

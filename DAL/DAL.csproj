@@ -63,6 +63,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementacao\ContaBancariaDAL.cs" />
     <Compile Include="Implementacao\DAL.cs" />
     <Compile Include="Implementacao\SistemaDAL.cs" />
     <Compile Include="Implementacao\TipoSistemaDAL.cs" />

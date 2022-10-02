@@ -116,6 +116,7 @@ function usuario_dom_carregarTabela(jqXhr) {
 
     if (total <= 0) {
         $("#usuario_tabelaContainer").css("display", "block");
+        resolve();
         return;
     }
 

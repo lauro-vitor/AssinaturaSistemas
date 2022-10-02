@@ -32,7 +32,7 @@ const exibirAlert = {
         let mensagem = "Ocorreu algum erro";
 
         if (jqXhr.responseJSON) {
-            mensagem = jqXhr.responseJSON.erros.join(", ");
+            mensagem = jqXhr.responseJSON.erros.join("<br/>");
         } else if (jqXhr) {
             mensagem = jqXhr.responseText;
         }
@@ -40,7 +40,7 @@ const exibirAlert = {
         Swal.fire({
             icon: 'error',
             title: 'Oops ...',
-            text: mensagem
+            html: mensagem
         });
     },
     mensagemSucesso: function (mensagem) {

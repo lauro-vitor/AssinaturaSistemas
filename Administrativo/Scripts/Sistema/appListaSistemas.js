@@ -88,6 +88,7 @@ const domSistemas = {
         if (total <= 0) {
             $("#sistema_tabela_wrapper").css("display", "none");
             $("#sistema_tablela_wrapper_vazio").css("display", "block");
+            resolve();
             return;
         }
 

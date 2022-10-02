@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = "Conta Bancária";
+}
+
+<h2>Conta bancária</h2>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div style="margin:10px 0; display:flex; justify-content:end;">
+                <button onclick="novoContaBancariaClick()" class="btn btn-primary">Novo</button>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Lista de conta bancária
+                </div>
+                <div class="panel-body">
+                    <div id="conta_tabela_container" style="display:none;">
+                        <div style="display:flex; justify-content:end">
+                            <b>Total:</b> &nbsp; <span id="totalSpan"></span>
+                        </div>
+                        <table id="conta_table" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Número Conta</th>
+                                    <th>Número Agência</th>
+                                    <th>Número Banco</th>
+                                    <th>Nome Banco</th>
+                                    <th>CNPJ</th>
+                                    <th>Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="conta_tabela_container_vazio" style="display:none;">
+                        <div class="alert alert-warning">
+                            Nehum Registro encontrado
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="contaBancariaModal" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Conta Bancária</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input id="idContaHidden" type="hidden" />
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                           <label>Número Conta</label>
+                            <input id="numeroContaTextBox" type="number" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Número Agência</label>
+                            <input id="numeroAgenciaTextBox" type="number" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Número Banco</label>
+                            <input id="numeroBancoTextBox" type="number" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Nome Banco</label>
+                            <input id="nomeBancoTextBox" type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>CNPJ</label>
+                            <input id="cnpjTextBox" type="number" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div style="display:flex; justify-content:end;">
+                    <button class="btn btn-default" data-dismiss="modal">Voltar</button>
+                    <button onclick="salvarContaBancaria()" class="btn btn-success">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/ContaBancaria/appContaBancaria.js"></script>
+}
