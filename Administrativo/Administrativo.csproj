@@ -136,7 +136,9 @@
     <Compile Include="Controllers\ContaBancariaController.cs" />
     <Compile Include="Controllers\ContatoController.cs" />
     <Compile Include="Controllers\EstadoController.cs" />
+    <Compile Include="Controllers\FichaFinanceiraController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ServicoFinanceiroController.cs" />
     <Compile Include="Controllers\SistemaController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Filters\AccountFilter.cs" />
@@ -2371,6 +2373,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Plugins\waitMe\waitMe.min.js" />
     <Content Include="Scripts\masterPage.js" />
+    <Content Include="Scripts\ServicoFinanceiro\appServicoFinanceiro.js" />
     <Content Include="Scripts\Sistema\appListaSistemas.js" />
     <Content Include="Scripts\Sistema\appManterSistema.js" />
     <Content Include="Scripts\Usuario\appUsuario.js" />
@@ -2400,6 +2403,8 @@
     <Content Include="Views\Sistema\Manter.cshtml" />
     <Content Include="Views\Sistema\Index.cshtml" />
     <Content Include="Views\ContaBancaria\Index.cshtml" />
+    <Content Include="Views\ServicoFinanceiro\Index.cshtml" />
+    <Content Include="Views\FichaFinanceira\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

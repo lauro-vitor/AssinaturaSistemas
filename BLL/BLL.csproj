@@ -48,6 +48,7 @@
     <Compile Include="EstadoBLL.cs" />
     <Compile Include="PaisBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServicoFinanceiroBLL.cs" />
     <Compile Include="SistemaBLL.cs" />
     <Compile Include="TelefoneBLL.cs" />
     <Compile Include="UsuarioBLL.cs" />

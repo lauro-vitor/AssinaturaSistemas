@@ -65,9 +65,12 @@
   <ItemGroup>
     <Compile Include="Implementacao\ContaBancariaDAL.cs" />
     <Compile Include="Implementacao\DAL.cs" />
+    <Compile Include="Implementacao\PeriodoCobrancaDAL.cs" />
+    <Compile Include="Implementacao\ServicoFinanceiroDAL.cs" />
     <Compile Include="Implementacao\SistemaDAL.cs" />
     <Compile Include="Implementacao\TipoSistemaDAL.cs" />
     <Compile Include="Implementacao\UsuarioDAL.cs" />
+    <Compile Include="Implementacao\VwServicoFinanceiroDAL.cs" />
     <Compile Include="Interfaces\IClienteDAL.cs" />
     <Compile Include="Interfaces\IContatoDAL.cs" />
     <Compile Include="Interfaces\IDAL.cs" />

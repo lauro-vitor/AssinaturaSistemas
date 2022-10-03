@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12" style="margin-bottom:20px;">
+            <h2>
+                Serviço Financeiro
+                <button onclick="novoServicoFinanceiroClick()" type="button" class="btn btn-primary pull-right">Novo</button>
+            </h2>
+
+        </div>
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Lista de serviços financeiro
+                </div>
+                <div class="panel-body">
+                    <div id="servicoFinanceiro_tabela_container" style="display:none;">
+                        <div style="display:flex; justify-content:end">
+                            <b>Total:</b> &nbsp; <span id="totalSpan"></span>
+                        </div>
+                        <table id="servicoFinanceiro_table" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Descrição</th>
+                                    <th>Período Cobrança</th>
+                                    <th>Conta Bancária</th>
+                                    <th>Dia Vencimento</th>
+                                    <th>Valor cobrança</th>
+                                    <th>Quantidade Parcelas</th>
+                                    <th>Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="servicoFinanceiro_tabela_container_vazio" style="display:none;">
+                        <div class="alert alert-warning">
+                            Nehum Registro encontrado
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="servicoFinanceiroModal" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Serviço Financeiro
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input id="idServicoFinanceiroHidden" type="hidden" />
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Conta bancária </label>
+                            <select id="contaBancariaDropDownList" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Período cobrança</label>
+                            <select id="periodoCobrancaDropDownList" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Descrição</label>
+                            <input id="descricaoTextBox" type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Dia do vencimento</label>
+                            <input id="diaVencimentoTextBox" type="number" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Valor cobrança</label>
+                            <input id="valorCobrancaTextBox" type="number" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Quantidade de parcelas</label>
+                            <input id="quantidadeParcelasTextBox" type="number" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="salvarServicoFinanceiroClick()" class="btn btn-success pull-right" style="margin-left:15px;">Salvar</button>
+                <button class="btn btn-default pull-right" data-dismiss="modal">Voltar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="~/Scripts/ServicoFinanceiro/appServicoFinanceiro.js"></script>
+}

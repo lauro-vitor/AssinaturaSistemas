@@ -3,6 +3,7 @@ using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ namespace DAL.Implementacao
 
         public DAL()
         {
+            CultureInfo.CurrentCulture = new CultureInfo("en-US");
+
             _sqlConnection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["AssinaturaSistemaSqlServer"].ConnectionString);
         }
         protected int CriarDAL(string comandoSql)

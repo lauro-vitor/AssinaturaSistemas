@@ -147,7 +147,7 @@ INNER JOIN Pais P ON P.IdPais = E.IdPais
 GO
 
 
-IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE 'Usuario')
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 'Usuario')
 BEGIN
 	CREATE TABLE Usuario(
 		IdUsuario INT NOT NULL IDENTITY(1,1),
@@ -158,6 +158,7 @@ BEGIN
 		PRIMARY KEY(IdUsuario)
 	)
 END
+GO
 
 IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 'TipoSistema')
 BEGIN
@@ -167,6 +168,7 @@ BEGIN
 		PRIMARY KEY(IdTipoSistema)
 	)
 END
+GO
 
 IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 'Sistema')
 BEGIN
@@ -201,7 +203,7 @@ BEGIN
 	ALTER TABLE Sistema
 	CHECK CONSTRAINT FK_Sistema_TipoSistema
 END
-
+GO
 --financeiro
 
 IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 'ContaBancaria')
@@ -216,6 +218,7 @@ BEGIN
 		PRIMARY KEY(IdContaBancaria)
 	);
 END
+GO
 
 IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 'PeriodoCobranca')
 BEGIN
@@ -225,6 +228,7 @@ BEGIN
 		PRIMARY KEY(IdPeriodoCobranca)
 	);
 END
+GO
 
 IF NOT EXISTS(SELECT * FROM [PeriodoCobranca])
 BEGIN
@@ -234,7 +238,7 @@ BEGIN
 		(2,'SEMESTRAL'),
 		(3,'ANUAL');
 END
-
+GO
 
 --SERVICO FINANCEIRO
 
@@ -246,7 +250,7 @@ BEGIN
 		IdPeriodoCobranca INT NOT NULL,
 		DescricaoServico VARCHAR(255) NOT NULL,
 		DiaVencimento INT NOT NULL,
-		ValorCobranca DECIMAL NOT NULL,
+		ValorCobranca DECIMAL(10,2) NOT NULL,
 		QuantidadeParcelas INT NOT NULL
 		PRIMARY KEY(IdServicoFinanceiro)
 	);
@@ -268,7 +272,7 @@ BEGIN
 	CHECK CONSTRAINT FK_ServicoFinanceiro_PeriodoCobranca
 
 END
-
+GO
 
 IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 'StatusParcela')
 BEGIN
@@ -278,7 +282,7 @@ BEGIN
 		PRIMARY KEY(IdStatusParcela)
 	);
 END
-
+GO
 
 IF NOT EXISTS (SELECT * FROM [StatusParcela])
 BEGIN
@@ -289,7 +293,7 @@ BEGIN
 		(3,'GRATUITO'),
 		(4,'CANCELADO');
 END
-
+GO
 
 IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 'Parcela')
 BEGIN
@@ -301,9 +305,9 @@ BEGIN
 		DataGeracao DATETIME NOT NULL,
 		DataVencimento DATETIME NOT NULL,
 		DataCancelamento DATETIME NULL,
-		Valor DECIMAL NOT NULL,
-		Desconto DECIMAL NULL,
-		Acrescimo DECIMAL NULL,
+		Valor DECIMAL(10,2) NOT NULL,
+		Desconto DECIMAL(10,2) NULL,
+		Acrescimo DECIMAL(10,2) NULL,
 		Observacao VARCHAR(MAX)
 	);
 
@@ -332,6 +336,18 @@ BEGIN
 	CHECK CONSTRAINT FK_Parcela_StatusParcela;
 
 END
+GO
 
 
-
+CREATE OR ALTER VIEW VwServicoFinanceiro AS
+	SELECT [IdServicoFinanceiro]
+		  ,[PeriodoCobrancaDescricao] = PC.Descricao
+		  ,[ContaBancariaDescricao] = CONCAT('Conta:', CON.NumeroConta,' Ag:',CON.NumeroAgencia)
+		  ,[DescricaoServico]
+		  ,[DiaVencimento]
+		  ,[ValorCobranca]
+		  ,[QuantidadeParcelas]
+	  FROM [dbo].[ServicoFinanceiro] SF
+	  INNER JOIN ContaBancaria CON ON SF.IdContaBancaria = CON.IdContaBancaria
+	  INNER JOIN PeriodoCobranca PC ON PC.IdPeriodoCobranca =  SF.IdPeriodoCobranca
+GO

@@ -117,3 +117,32 @@ const Modal = {
         $("#modal_mensagem_container").empty();
     }
 }
+
+
+const numericoUtil = {
+    transformarTextBoxInteiro: function (idElemento) {
+        let value = parseInt($(idElemento).val());
+
+        if (isNaN(value))
+            return 0;
+
+        return value;
+    },
+    transformarTextBoxDecimal: function (idElemento) {
+        let value = parseFloat($(idElemento).val());
+
+        if (isNaN(value))
+            return 0.00;
+
+        return value;
+    },
+
+    transformarDropDownListNumerico: function (idElemento) {
+        let value = parseInt($(idElemento + " option:selected ").val());
+
+        if (isNaN(value))
+            return 0;
+
+        return value;
+    },
+};
