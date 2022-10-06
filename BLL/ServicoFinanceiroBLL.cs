@@ -1,4 +1,5 @@
 ﻿using Entidades;
+using Entidades.enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,63 @@ using System.Threading.Tasks;
 
 namespace BLL
 {
-    public class ServicoFinanceiroBLL 
+    public class ServicoFinanceiroBLL
     {
+        public bool ValidarConcessao(int idServicoFinanceiro, int idSistema, List<VwParcela> parcelasDoSistema)
+        {
+            return !parcelasDoSistema.Any(p => p.IdServicoFinanceiro == idServicoFinanceiro && p.IdSistema == idSistema);
+        }
+
+        public List<Parcela> ConcederServicoFinanceiro(ServicoFinanceiro servicoFinanceiro, int idSistema)
+        {
+            var parcelas = new List<Parcela>();
+
+            var hoje = DateTime.Now;
+
+            var dataServico = new DateTime();
+
+            if (hoje.Day < servicoFinanceiro.DiaVencimento)
+            {
+                dataServico = new DateTime(hoje.Year, (hoje.Month + 1), servicoFinanceiro.DiaVencimento);
+            }
+            else
+            {
+                dataServico = new DateTime(hoje.Year, (hoje.Month + 1), servicoFinanceiro.DiaVencimento);
+            }
+
+
+            for (int i = 1; i <= servicoFinanceiro.QuantidadeParcelas; i++)
+            {
+
+                var novaParcela = new Parcela()
+                {
+                    Acrescimo = 0.00M,
+                    Desconto = 0.00M,
+                    DataGeracao = DateTime.Now,
+                    DataCancelamento = null,
+                    IdServicoFinanceiro = servicoFinanceiro.IdServicoFinanceiro,
+                    Valor = servicoFinanceiro.ValorCobranca,
+                    IdSistema = idSistema,
+                    IdStatusParcela = (int)EnumStatusParcela.Aberto,
+                    Observacao = "",
+                    DataVencimento = dataServico,
+                    Numero = i,
+                };
+
+
+                if (servicoFinanceiro.IdPeriodoCobranca == (int)EnumPeriodoCobranca.Mensal)
+                    dataServico = dataServico.AddMonths(1);
+                else if (servicoFinanceiro.IdPeriodoCobranca == (int)EnumPeriodoCobranca.Semestral)
+                    dataServico = dataServico.AddMonths(6);
+                else if (servicoFinanceiro.IdPeriodoCobranca == (int)EnumPeriodoCobranca.Anual)
+                    dataServico = dataServico.AddYears(1);
+
+
+                parcelas.Add(novaParcela);
+            }
+
+            return parcelas;
+        }
         public List<string> ValidarServicoFinanceiro(ServicoFinanceiro servicoFinanceiro)
         {
             var erros = new List<string>();

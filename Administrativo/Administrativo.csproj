@@ -2360,7 +2360,8 @@
     <Content Include="Scripts\Cliente\ListaClientes.js" />
     <Content Include="Scripts\Cliente\manterCliente.js" />
     <Content Include="Scripts\ContaBancaria\appContaBancaria.js" />
-    <Content Include="Scripts\Contatos\ListaContatos.js" />
+    <Content Include="Scripts\FichaFinanceira\appFichaFinanceira.js" />
+    <Content Include="Scripts\FichaFinanceira\appListaFichaFinanceira.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -2405,6 +2406,7 @@
     <Content Include="Views\ContaBancaria\Index.cshtml" />
     <Content Include="Views\ServicoFinanceiro\Index.cshtml" />
     <Content Include="Views\FichaFinanceira\Index.cshtml" />
+    <Content Include="Views\FichaFinanceira\Manter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

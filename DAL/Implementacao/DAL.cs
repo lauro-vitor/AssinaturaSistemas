@@ -12,7 +12,7 @@ namespace DAL.Implementacao
 {
     public class DAL<T>
     {
-        private readonly SqlConnection _sqlConnection;
+        protected readonly SqlConnection _sqlConnection;
 
         public DAL()
         {

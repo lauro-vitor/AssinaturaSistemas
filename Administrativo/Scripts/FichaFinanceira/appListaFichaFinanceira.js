@@ -13,6 +13,7 @@
     }, 500);
 });
 
+
 function carregarSistemas() {
     const filtro = {
         idCliente: "0",
@@ -78,14 +79,10 @@ function carregarSistemas() {
                                     <td>
                                         <i class="fa fa-check" style="color:${corSistemaAtivo}"></i>
                                     </td>
-                                     <td>
-                                        <span style="cursor:pointer;" onclick="editarSistemaClick('${s.IdSistema}');">
-                                            <i class="fa fa-pencil"></i>
-                                        </span>
-                                            &nbsp;&nbsp;
-                                        <span style="cursor:pointer;" onclick="deletarSistemaClick('${s.IdSistema}')">
-                                            <i class="fa fa-trash"></i>
-                                        </span>
+                                    <td>
+                                        <span style="cursor:pointer" onclick="irParaFicharFinanceira('${s.IdSistema}')">
+                                           <i class="fa fa-money-check-dollar"></i>
+                                        </spn>
                                     </td>
                                 </tr>`);
 
@@ -99,50 +96,9 @@ function carregarSistemas() {
     });
 }
 
-
-
-function deletarSistema(id) {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            type: "POST",
-            url: "/Sistema/Deletar?id=" + id,
-        }).done(jqXhr => {
-            exibirAlert.mensagemSucesso("Sistema excluído com sucesso");
-            resolve();
-        }).fail(jqXhr => {
-            reject(jqXhr);
-        })
-    });
+function irParaFicharFinanceira(id) {
+    window.open("/FichaFinanceira/manter?id=" + id, "_self");
 }
-
-
-
-
-
-
-function editarSistemaClick(idSistema) {
-    window.open("/Sistema/manter?idSistema=" + idSistema, "_blank");
-};
-
-function deletarSistemaClick(idSistema) {
-    exibirAlert.confirmar("Excluir sistema", function () {
-
-        loading.bloquear();
-
-        setTimeout(async function () {
-            try {
-                await deletarSistema(idSistema);
-                await carregarSistemas();
-            } catch (err) {
-                exibirAlert.mensagemErroAjax(err);
-            } finally {
-                loading.desbloquear();
-            }
-        }, 500);
-
-    });
-
-};
 
 function filtrarSistemasClick() {
     loading.bloquear();
@@ -158,6 +114,7 @@ function filtrarSistemasClick() {
 
     }, 500);
 };
+
 
 function limparFiltroSistemasClick() {
     loading.bloquear();

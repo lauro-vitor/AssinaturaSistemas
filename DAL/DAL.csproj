@@ -65,21 +65,27 @@
   <ItemGroup>
     <Compile Include="Implementacao\ContaBancariaDAL.cs" />
     <Compile Include="Implementacao\DAL.cs" />
+    <Compile Include="Implementacao\PagamentoParcelaDAL.cs" />
+    <Compile Include="Implementacao\ParcelaDAL.cs" />
     <Compile Include="Implementacao\PeriodoCobrancaDAL.cs" />
     <Compile Include="Implementacao\ServicoFinanceiroDAL.cs" />
     <Compile Include="Implementacao\SistemaDAL.cs" />
     <Compile Include="Implementacao\TipoSistemaDAL.cs" />
     <Compile Include="Implementacao\UsuarioDAL.cs" />
+    <Compile Include="Implementacao\VwParcelaDAL.cs" />
     <Compile Include="Implementacao\VwServicoFinanceiroDAL.cs" />
+    <Compile Include="Implementacao\VwSistemaDAL.cs" />
     <Compile Include="Interfaces\IClienteDAL.cs" />
     <Compile Include="Interfaces\IContatoDAL.cs" />
     <Compile Include="Interfaces\IDAL.cs" />
     <Compile Include="Interfaces\IEstadoDAL.cs" />
+    <Compile Include="Interfaces\IPagamentoParcelaDAL.cs" />
     <Compile Include="Interfaces\IPaisDAL.cs" />
     <Compile Include="Implementacao\ClienteDAL.cs" />
     <Compile Include="Implementacao\ContatoDAL.cs" />
     <Compile Include="Implementacao\EstadoDAL.cs" />
     <Compile Include="Implementacao\PaisDAL.cs" />
+    <Compile Include="Interfaces\IParcelaDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +95,10 @@
     <ProjectReference Include="..\Entidades\Entidades.csproj">
       <Project>{69d2533a-433d-4aef-bac5-c2c61d4343f8}</Project>
       <Name>Entidades</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Util\Util.csproj">
+      <Project>{A17AD704-5B64-4191-AA32-BAEE0DF751F0}</Project>
+      <Name>Util</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

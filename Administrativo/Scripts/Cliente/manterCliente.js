@@ -362,7 +362,6 @@ function contato_carregarTabela(resposta) {
     if (total <= 0) {
         $("#contato_tabelaContainer").css("display", "none");
         $("#contato_mensagemVazio").css("display", "block");
-        resolve();
         return;
     } else {
         $("#contato_tabelaContainer").css("display", "block");

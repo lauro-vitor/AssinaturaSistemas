@@ -41,7 +41,7 @@ namespace Administrativo.Controllers
         {
             try
             {
-               
+
 
                 var servicosFinanceiro = _vwServicoFinanceiroDAL.ObterVarios();
                 int total = servicosFinanceiro.Count();
@@ -209,10 +209,44 @@ namespace Administrativo.Controllers
                 return Json(new
                 {
                     mensagem = "Excluído com sucesso"
-                },JsonRequestBehavior.AllowGet);
+                }, JsonRequestBehavior.AllowGet);
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
+            {
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+                return Json(new
+                {
+                    erros = new List<string>()
+                    {
+                        ex.Message
+                    }
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public JsonResult ObterServicoFinanceiroDropDownList()
+        {
+            try
+            {
+                var servicosFinanceiro = _vwServicoFinanceiroDAL
+                    .ObterVarios()
+                    .Select(sf => new SelectListItem
+                    {
+                        Value = sf.IdServicoFinanceiro.ToString(),
+                        Text = sf.DescricaoServico
+                    });
+
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
+
+                return Json(new
+                {
+                    servicosFinanceiro
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
             {
                 HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 

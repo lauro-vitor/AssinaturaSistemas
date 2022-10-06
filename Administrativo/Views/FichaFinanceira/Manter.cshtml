@@ -1,0 +1,224 @@
+﻿
+@{
+    ViewBag.Title = "Ficha Financeira";
+}
+<style>
+    .titulo-conteudo {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 10px 0;
+        text-align: end;
+    }
+
+    .conteudo {
+        font-size: 18px;
+        margin: 10px 0;
+        text-align: left;
+    }
+</style>
+
+<div class="container">
+    <div>
+        <h2>
+            Ficha Financeira
+            <button class="btn btn-success pull-right" style="margin-left:15px;" onclick="abrirModalConcederServicoFinanceiro()">
+                Conceder Serviço
+            </button>
+
+          
+        </h2>
+    </div>
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Dados do Sistema
+            </div>
+
+            <div class="panel-body">
+                <div class="col-xs-2">
+                    <div class="titulo-conteudo">Cliente:</div>
+                    <div class="titulo-conteudo">Tipo Sistema:</div>
+                    <div class="titulo-conteudo">Domínio:</div>
+                </div>
+                <div class="col-xs-3">
+                    <div id="clienteLiteral" class="conteudo"></div>
+                    <div id="tipoSistemaLiteral" class="conteudo"></div>
+                    <div id="dominioLiteral" class="conteudo"></div>
+                </div>
+                <div class="col-xs-3">
+                    <div class="titulo-conteudo">Domínio provisório:</div>
+                    <div class="titulo-conteudo">Data Inínio:</div>
+                    <div class="titulo-conteudo">Data Cancelamento:</div>
+                </div>
+                <div class="col-xs-4">
+                    <div id="dominioProvisorioLiteral" class="conteudo"></div>
+                    <div id="dataInicioLiteral" class="conteudo"></div>
+                    <div id="dataCancelamentoLiteral" class="conteudo"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="panel panel-default" style="margin-top:20px;">
+            <div class="panel-heading">
+                Parcelas
+            </div>
+            <div class="panel panel-body">
+                <div id="parcela_conteudoTabela" style="display:none;">
+                    <div style="text-align:end;">
+                        <b>Total:</b> <span id="totalParcelas"></span>
+                    </div>
+                    <table id="percela_tabela" class="table table-striped" style="text-align:center;">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Serviço Financeiro</th>
+                                <th class="text-center">Parcela</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Data de Vencimento</th>
+                                <th class="text-center">Desconto</th>
+                                <th class="text-center">Acréscimo</th>
+                                <th class="text-center">Valor Pago</th>
+                                <th class="text-center">Valor a pagar</th>
+                                <th class="text-center">Opções</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="parcela_vazioTabela" style="display:none;">
+                    <div class="alert alert-warning">
+                        Nehum registro encontrado!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pagamentoParcela_Modal" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Pagamento</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input id="pagamentoParcela_IdPagamentoParcela" type="hidden" />
+                    <input id="pagamentoParcela_IdParcela" type="hidden" />
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-grop">
+                            <label>Data Pagamento</label>
+                            <input id="pagamentoParcela_DataPagamento" type="date"  class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Valor Depósito</label>
+                            <input id="pagamentoParcela_ValorDepositoBancario" type="number" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Valor Cartão de Crédito</label>
+                            <input id="pagamentoParcela_ValorCartaoCredito" type="number" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Valor Cartão de Débito</label>
+                            <input id="pagamentoParcela_ValorCartaoDebito" type="number" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">Voltar</button>
+                <button class="btn btn-success" onclick="salvarPagamentoParcelaClick()">Pagar</button>
+            </div>
+        </div>
+       
+    </div>
+</div>
+
+<div id="editarParcelaModal" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                Parcela
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input id="idParcelaHiddenField" type="hidden"/>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Data de Vencimento</label>
+                            <input id="dataVencimentoTextBox" type="date" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Valor</label>
+                            <input id="valorTextBox" type="number" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Desconto</label>
+                            <input id="descontoTextBox" type="number" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Acréscimo</label>
+                            <input id="acrescimoTextBox"  type="number" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>Observação</label>
+                            <textarea id="observacaoTextBox" class="form-control">
+    
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button class="btn btn-default" data-dismiss="modal">Voltar</button>
+                <button onclick="salvarEditarParcelaClick()" class="btn btn-success">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="concederServicoModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Conceder serviço financeiro</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>Serviço finaceiro</label>
+                            <select id="servicoFinanceiroDropDownList" class="form-control"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">Voltar</button>
+                <button onclick="concederServicoFinanceiroClick()" class="btn btn-success">Conceder</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/FichaFinanceira/appFichaFinanceira.js"></script>
+}
+
+
+

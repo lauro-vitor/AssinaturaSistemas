@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>Ficha Financeira</h2>
+        </div>
+        <div class="col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Filtro
+                </div>
+                <div id="panelFiltro" class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-4">
+                            <div class="form-group">
+                                <label>Cliente</label>
+                                <select id="sistema_filtro_cliente" class="form-control">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-4">
+                            <div class="form-group">
+                                <label>Tipo Sistema</label>
+                                <select id="sistema_filtro_tipoSistema" class="form-control">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-4">
+                            <div class="form-group">
+                                <label>Domínio</label>
+                                <input id="sistema_filtro_dominio" type="text" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-4">
+                            <div class="form-group">
+                                <label>Domínio provisório</label>
+                                <input id="sistema_filtro_dominioProvisorio" type="text" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-4">
+                            <label>Data de Início</label>
+                            <div class="input-group">
+                                <input id="sistema_filtro_periodoInicial_dataInicio" type="date" class="form-control" />
+                                <span class="input-group-addon">Até</span>
+                                <input id="sistema_filtro_periodoFinal_dataInicio" type="date" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-4">
+                            <label>Data de Cancelamento</label>
+                            <div class="input-group">
+                                <input id="sistema_filtro_periodoInicial_dataCancelamento" type="date" class="form-control" />
+                                <span class="input-group-addon">Até</span>
+                                <input id="sistema_filtro_periodoFinal_dataCancelamento" type="date" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-xs-12" style="display:flex; justify-content:end; margin-top:10px;">
+                            <button onclick="limparFiltroSistemasClick()" class="btn btn-default col-xs-12 col-sm-2">Limpar filtro</button> &nbsp; &nbsp;
+                            <button onclick="filtrarSistemasClick()" class="btn btn-primary col-xs-12 col-sm-2">Filtrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" style="margin-top:20px;">
+                <div class="panel-heading">
+                    Lista de Sistemas
+                </div>
+                <div class="panel-body">
+                    <div id="sistema_tabela_wrapper" style="overflow-x:scroll; display:none;">
+                        <div class="text-right">
+                            Total: <span id="totalSpan"></span>
+                        </div>
+                        <table id="sistema_tabela" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Tipo de Sistema</th>
+                                    <th>Domínio</th>
+                                    <th>Domínio Provisório</th>
+                                    <th>Data Início</th>
+                                    <th>Data Cancelamento</th>
+                                    <th>Ativo</th>
+                                    <th>Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="sistema_tablela_wrapper_vazio" class="alert alert-warning" style="display:none;">
+                        Nehum resultado econtrado!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/FichaFinanceira/appListaFichaFinanceira.js"></script>
+}
+

@@ -302,13 +302,15 @@ BEGIN
 		IdSistema INT NOT NULL,
 		IdServicoFinanceiro INT NOT NULL,
 		IdStatusParcela INT NOT NULL,
+		Numero INT NOT NULL,
 		DataGeracao DATETIME NOT NULL,
 		DataVencimento DATETIME NOT NULL,
 		DataCancelamento DATETIME NULL,
 		Valor DECIMAL(10,2) NOT NULL,
 		Desconto DECIMAL(10,2) NULL,
 		Acrescimo DECIMAL(10,2) NULL,
-		Observacao VARCHAR(MAX)
+		Observacao VARCHAR(MAX),
+		PRIMARY KEY (IdParcela),
 	);
 
 	ALTER TABLE Parcela
@@ -351,3 +353,63 @@ CREATE OR ALTER VIEW VwServicoFinanceiro AS
 	  INNER JOIN ContaBancaria CON ON SF.IdContaBancaria = CON.IdContaBancaria
 	  INNER JOIN PeriodoCobranca PC ON PC.IdPeriodoCobranca =  SF.IdPeriodoCobranca
 GO
+
+CREATE OR ALTER VIEW VwSistema
+AS
+SELECT 
+		S.*,
+		[ClienteNomeEmpresa] = C.NomeEmpresa,
+		[DescricaoTipoSistema] = TS.Descricao
+FROM Sistema  S
+INNER JOIN Cliente C ON C.IdCliente =  S.IdCliente
+INNER JOIN TipoSistema TS ON TS.IdTipoSistema = S.IdTipoSistema
+GO
+
+
+
+
+
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE 'PagamentoParcela')
+BEGIN
+	CREATE TABLE PagamentoParcela(
+		IdPagamentoParcela INT NOT NULL IDENTITY(1,1),
+		IdParcela INT NOT NULL,
+		DataPagamento DATETIME NOT NULL,
+		ValorDepositoBancario DECIMAL(10,2) NOT NULL DEFAULT 0,
+		ValorCartaoCredito DECIMAL (10,2) NOT NULL DEFAULT 0,
+		ValorCartaoDebito DECIMAL (10,2) NOT NULL DEFAULT 0
+	);
+	ALTER TABLE PagamentoParcela
+	WITH CHECK ADD CONSTRAINT FK_PagamentoParcela_Parcela
+	FOREIGN KEY([IdParcela])
+	REFERENCES [dbo].[Parcela](IdParcela)
+END
+GO
+
+
+
+CREATE OR ALTER    VIEW [dbo].[VwParcela]  
+AS  
+SELECT P.[IdParcela]  
+      ,P.[IdSistema]  
+      ,P.[IdServicoFinanceiro]  
+	  ,SF.[DescricaoServico]  
+      ,P.[IdStatusParcela]  
+	  ,[StatusParcelaDescricao] = SP.Descricao  
+      ,P.[Numero]  
+      ,[DataGeracao] = FORMAT([DataGeracao],'dd/MM/yyyy')  
+      ,[DataVencimento] = FORMAT([DataVencimento],'dd/MM/yyyy')  
+      ,[DataCancelamento] = FORMAT([DataCancelamento],'dd/MM/yyyy')  
+      ,[ValorPagar] = (([Valor] + [Acrescimo]) - [Desconto])  
+      ,P.[Desconto]  
+      ,P.[Acrescimo]  
+      ,P.[Observacao]
+	  ,[ValorPago] = (ISNULL(PP.ValorDepositoBancario, 0) + ISNULL(PP.ValorCartaoCredito, 0) + ISNULL(PP.ValorCartaoDebito, 0))
+  FROM [dbo].[Parcela] P  
+  INNER JOIN ServicoFinanceiro SF ON SF.IdServicoFinanceiro = P.IdServicoFinanceiro  
+  INNER JOIN StatusParcela SP ON SP.IdStatusParcela = P.IdStatusParcela  
+  LEFT JOIN PagamentoParcela PP ON PP.IdParcela = P.IdParcela
+GO
+
+
+

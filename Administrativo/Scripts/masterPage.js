@@ -146,3 +146,12 @@ const numericoUtil = {
         return value;
     },
 };
+
+function formatarData(data) {
+    if (data) {
+        const [ano, mes, dia] = data.split("-");
+        return `${dia}/${mes}/${ano}`;
+    }
+    return "";
+   
+}

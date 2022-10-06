@@ -20,11 +20,13 @@ namespace Administrativo.Controllers
         private readonly SistemaDAL _sistemaDAL;
         private readonly ClienteDAL _clienteDAL;
         private readonly TipoSistemaDAL _tipoSistemaDAL;
+        private readonly VwSistemaDAL _vwSistemaDAL;
         public SistemaController()
         {
             _clienteDAL = new ClienteDAL();
             _sistemaDAL = new SistemaDAL();
             _tipoSistemaDAL = new TipoSistemaDAL();
+            _vwSistemaDAL = new VwSistemaDAL();
         }
         // GET: Sistema
 
@@ -38,75 +40,6 @@ namespace Administrativo.Controllers
             return View();
         }
 
-        [HttpGet]
-        public JsonResult ObterListaSistemasViewModel()
-        {
-            try
-            {
-                var clientes = _clienteDAL.ObterVarios(c => true);
-
-                var tiposSistema = _tipoSistemaDAL.ObterVarios();
-
-                var sistemas = _sistemaDAL.ObterVarios();
-
-                var sistemasViewModel =
-                    from s in sistemas
-                    join c in clientes on s.IdCliente equals c.IdCliente
-                    join ts in tiposSistema on s.IdTipoSistema equals ts.IdTipoSistema
-                    select new SistemaViewModel
-                    {
-                        IdSistema = CriptografiaUtil.Encrypt(s.IdSistema.ToString()),
-                        IdCliente = CriptografiaUtil.Encrypt(s.IdCliente.ToString()),
-                        IdTipoSistema = CriptografiaUtil.Encrypt(s.IdTipoSistema.ToString()),
-                        Ativo = s.Ativo,
-                        BancoDeDados = s.BancoDeDados,
-                        ClienteNomeEmpresa = c.NomeEmpresa,
-                        DataCancelamento = (s.DataCancelamento.HasValue ? s.DataCancelamento.Value.ToString("dd/MM/yyy") : ""),
-                        DataInicio = (s.DataInicio.ToString("dd/MM/yyyy")),
-                        Dominio = s.Dominio,
-                        DominioProvisorio = s.DominioProvisorio,
-                        Pasta = s.Pasta,
-                        TipoSistemaDescricao = ts.Descricao,
-                    };
-
-                int total = sistemasViewModel.Count();
-
-                var clientesViewModel = clientes.Select(c => new SelectListItem
-                {
-                    Text = c.NomeEmpresa,
-                    Value = CriptografiaUtil.Encrypt(c.IdCliente.ToString())
-                });
-
-                var tiposSistemaViewModel = tiposSistema.Select(ts => new SelectListItem
-                {
-                    Text = ts.Descricao,
-                    Value = CriptografiaUtil.Encrypt(ts.IdTipoSistema.ToString())
-                });
-
-
-                HttpContext.Response.StatusCode = 200;
-
-                return Json(new
-                {
-                    total,
-                    tiposSistema = tiposSistemaViewModel,
-                    clientes = clientesViewModel,
-                    sistemas = sistemasViewModel,
-                }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                HttpContext.Response.StatusCode = 500;
-
-                return Json(new
-                {
-                    erros = new List<string>
-                    {
-                        ex.Message
-                    }
-                }, JsonRequestBehavior.AllowGet); ;
-            }
-        }
 
         [HttpGet]
         public JsonResult ObterVarios(string idCliente, string idTipoSistema, string dominioProvisorio, string dominio,
@@ -168,12 +101,27 @@ namespace Administrativo.Controllers
 
                 int total = sistemasViewModel.Count();
 
+                var clientesViewModel = clientes.Select(c => new SelectListItem
+                {
+                    Text = c.NomeEmpresa,
+                    Value = CriptografiaUtil.Encrypt(c.IdCliente.ToString())
+                });
+
+                var tiposSistemaViewModel = tiposSistema.Select(ts => new SelectListItem
+                {
+                    Text = ts.Descricao,
+                    Value = CriptografiaUtil.Encrypt(ts.IdTipoSistema.ToString())
+                });
+
+
                 HttpContext.Response.StatusCode = 200;
 
                 return Json(new
                 {
                     total,
-                    sistemas = sistemasViewModel
+                    sistemas = sistemasViewModel,
+                    tiposSistema = tiposSistemaViewModel,
+                    clientes = clientesViewModel
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -198,6 +146,47 @@ namespace Administrativo.Controllers
                 int idDescriptografado = int.Parse(CriptografiaUtil.Decrypt(id));
 
                 var sistema = _sistemaDAL.ObterPorId(idDescriptografado);
+
+                if (sistema == null)
+                {
+                    HttpContext.Response.StatusCode = 400;
+
+                    return Json(new
+                    {
+                        erros = new List<string>
+                        {
+                            "Sistema não existe"
+                        }
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+
+                HttpContext.Response.StatusCode = 200;
+
+                return Json(new
+                {
+                    sistema
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                HttpContext.Response.StatusCode = 500;
+
+                return Json(new
+                {
+                    erros = ex.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public JsonResult ObterVwSistemaPorId(string id)
+        {
+            try
+            {
+                int idDescriptografado = int.Parse(CriptografiaUtil.Decrypt(id));
+
+                var sistema = _vwSistemaDAL.ObterPorId(idDescriptografado);
 
                 if (sistema == null)
                 {
