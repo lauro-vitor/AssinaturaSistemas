@@ -14,6 +14,7 @@ namespace StripeNet
         {
             StripeConfiguration.ApiKey = System.Configuration.ConfigurationManager.AppSettings["secret_key"];
             _priceService = new PriceService();
+            
         }
 
         /// <summary>

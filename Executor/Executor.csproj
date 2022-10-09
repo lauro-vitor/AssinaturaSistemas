@@ -36,6 +36,7 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Stripe.net, Version=40.7.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,7 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GetNet\ClienteServiceGetNetTeste.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -59,9 +59,21 @@
       <Project>{975d916c-56a5-4d89-8f63-69ba8a82d879}</Project>
       <Name>BLL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GetNet\GetNet.csproj">
-      <Project>{6ac2815d-009d-4fd5-869a-d0415873d05a}</Project>
-      <Name>GetNet</Name>
+    <ProjectReference Include="..\DAL\DAL.csproj">
+      <Project>{d402a345-24bd-4dd7-a4bd-0afb9ed9d3b4}</Project>
+      <Name>DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Entidades\Entidades.csproj">
+      <Project>{69d2533a-433d-4aef-bac5-c2c61d4343f8}</Project>
+      <Name>Entidades</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StripeNet\StripeNet.csproj">
+      <Project>{0a679cf1-e0e2-4889-9046-02976800c4d5}</Project>
+      <Name>StripeNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Util\Util.csproj">
+      <Project>{a17ad704-5b64-4191-aa32-baee0df751f0}</Project>
+      <Name>Util</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
