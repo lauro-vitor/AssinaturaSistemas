@@ -37,7 +37,7 @@ namespace DAL.Implementacao
 	                        Descricao
                         FROM PeriodoCobranca";
 
-            return this.ObterVariosDAL(sql);
+            return this.DALobterVarios(sql);
         }
     }
 }

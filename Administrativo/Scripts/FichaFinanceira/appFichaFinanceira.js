@@ -109,9 +109,10 @@ function carregarParcelas() {
 
                 let atributosBloqueado = "onclick='return;' style='cursor:not-allowed'";
 
+                 
                 if (parcela.ValorPago > 0) //pago
                 {
-                    atriburosSpanEditarParcela = atributosBloqueado;
+                   
                     atributosCancelarParcela = atributosBloqueado;
                     atributosExcluirParcela = atributosBloqueado;
                 }
@@ -229,7 +230,9 @@ function editarParcelaClick(idParcela) {
                 loading.desbloquear();
             }
         }).done(jqXhr => {
-            const { parcela } = jqXhr;
+            const { parcela, parcelaPaga } = jqXhr;
+
+            const desabilitarEdicao = parcelaPaga;
 
             $("#idParcelaHiddenField").val(parcela.IdParcela);
             $("#dataVencimentoTextBox").val(parcela.DataVencimentoVM);
@@ -237,6 +240,10 @@ function editarParcelaClick(idParcela) {
             $("#descontoTextBox").val(parcela.Desconto);
             $("#acrescimoTextBox").val(parcela.Acrescimo);
             $("#observacaoTextBox").val(parcela.Observacao);
+
+          
+            desabilitarEdicaoParcela(desabilitarEdicao);
+
             $("#editarParcelaModal").modal("show");
 
         }).fail(jqXhr => {
@@ -346,13 +353,18 @@ function pagamentoParcelaClick(idParcela) {
                 loading.desbloquear();
             }
         }).done(jqXhr => {
-            const { pagamentoParcela } = jqXhr;
+            const { pagamentoParcela, pagamentoStripe } = jqXhr;
+            const desabilitarEditacao = pagamentoStripe;
+
             $("#pagamentoParcela_IdPagamentoParcela").val(pagamentoParcela.IdPagamentoParcela);
             $("#pagamentoParcela_IdParcela").val(pagamentoParcela.IdParcela);
             $("#pagamentoParcela_DataPagamento").val(pagamentoParcela.DataPagamentoVM);
             $("#pagamentoParcela_ValorDepositoBancario").val(pagamentoParcela.ValorDepositoBancario);
             $("#pagamentoParcela_ValorCartaoCredito").val(pagamentoParcela.ValorCartaoCredito);
             $("#pagamentoParcela_ValorCartaoDebito").val(pagamentoParcela.ValorCartaoDebito);
+
+            desabilitarEdicaoPagamento(desabilitarEditacao);
+
             $("#pagamentoParcela_Modal").modal("show");
         }).fail(jqXhr => {
             exibirAlert.mensagemErroAjax(jqXhr);
@@ -391,3 +403,19 @@ function salvarPagamentoParcelaClick() {
     }, 500);
 }
 
+function desabilitarEdicaoParcela(desabilitar) {
+   
+    $("#dataVencimentoTextBox").prop("disabled",desabilitar);
+    $("#valorTextBox").prop("disabled", desabilitar);
+    $("#descontoTextBox").prop("disabled", desabilitar);
+    $("#acrescimoTextBox").prop("disabled", desabilitar);
+    $("#observacaoTextBox").prop("disabled", desabilitar);
+    $("#salvarEditarParcelaButton").prop("disabled", desabilitar);
+}
+function desabilitarEdicaoPagamento(desabilitar) {
+    $("#pagamentoParcela_DataPagamento").prop("disabled", desabilitar);
+    $("#pagamentoParcela_ValorDepositoBancario").prop("disabled", desabilitar);
+    $("#pagamentoParcela_ValorCartaoCredito").prop("disabled", desabilitar);
+    $("#pagamentoParcela_ValorCartaoDebito").prop("disabled", desabilitar);
+    $("#salvarPagamentoParcelaButton").prop("disabled", desabilitar);
+}

@@ -27,7 +27,7 @@ namespace DAL.Implementacao
                                ,{servicoFinanceiro.ValorCobranca}
                                ,{servicoFinanceiro.QuantidadeParcelas})";
 
-            int idRetorno = this.CriarDAL(sql);
+            int idRetorno = this.DALcriar(sql);
 
             servicoFinanceiro.IdServicoFinanceiro = idRetorno;
 
@@ -41,7 +41,7 @@ namespace DAL.Implementacao
                 WHERE [IdServicoFinanceiro] = {id}
             ";
 
-            this.DeletarDAL(sql);
+            this.DALdeletar(sql);
         }
 
         public ServicoFinanceiro Editar(ServicoFinanceiro servicoFinanceiro)
@@ -56,7 +56,7 @@ UPDATE [dbo].[ServicoFinanceiro]
       ,[QuantidadeParcelas] = {servicoFinanceiro.QuantidadeParcelas}
  WHERE [IdServicoFinanceiro] = {servicoFinanceiro.IdServicoFinanceiro}
 ";
-            this.EditarDAL(sql);
+            this.DALeditar(sql);
 
             return servicoFinanceiro;
         }
@@ -74,7 +74,7 @@ UPDATE [dbo].[ServicoFinanceiro]
         FROM [dbo].[ServicoFinanceiro]
         WHERE [IdServicoFinanceiro] = {id}
 ";
-            return this.ObterPorIdDAL(sql);
+            return this.DALobterPorId(sql);
         }
 
         public List<ServicoFinanceiro> ObterVarios()
@@ -87,9 +87,12 @@ SELECT [IdServicoFinanceiro]
       ,[DiaVencimento]
       ,[ValorCobranca]
       ,[QuantidadeParcelas]
+      ,[StripePriceId]
+      ,[StripeOrdem]
+      ,[IdTipoSistema]
   FROM [dbo].[ServicoFinanceiro]
 ";
-            return this.ObterVariosDAL(sql);
+            return this.DALobterVarios(sql);
         }
     }
 }

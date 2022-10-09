@@ -20,7 +20,8 @@ namespace DAL.Implementacao
 
             _sqlConnection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["AssinaturaSistemaSqlServer"].ConnectionString);
         }
-        protected int CriarDAL(string comandoSql)
+
+        protected int DALcriar(string comandoSql)
         {
             _sqlConnection.Open();
             var comando = _sqlConnection.CreateCommand();
@@ -28,7 +29,7 @@ namespace DAL.Implementacao
             int id = 0;
             try
             {
-                comando.CommandText = comandoSql  + "; SELECT @@IDENTITY AS [Last-Inserted Identity Value];";
+                comando.CommandText = " SET DATEFORMAT YMD; " + comandoSql + "; SELECT @@IDENTITY AS [Last-Inserted Identity Value];";
                 comando.Transaction = transaction;
                 var idInseridoRetorno = comando.ExecuteScalar();
                 id = int.Parse(idInseridoRetorno.ToString());
@@ -47,14 +48,37 @@ namespace DAL.Implementacao
 
             return id;
         }
-        protected void EditarDAL(string comandoSql)
+
+        protected int DALcriarComTransacao(string comandoSql, SqlConnection sqlConnection, SqlTransaction sqlTransaction)
+        {
+            var comando = sqlConnection.CreateCommand();
+
+            int id;
+
+            try
+            {
+                comando.CommandText = " SET DATEFORMAT YMD; " + comandoSql + "; SELECT @@IDENTITY AS [Last-Inserted Identity Value];";
+                comando.Transaction = sqlTransaction;
+                var idInseridoRetorno = comando.ExecuteScalar();
+                id = int.Parse(idInseridoRetorno.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return id;
+        }
+
+        protected void DALeditar(string comandoSql)
         {
             _sqlConnection.Open();
             var comando = _sqlConnection.CreateCommand();
             var transaction = _sqlConnection.BeginTransaction();
             try
             {
-                comando.CommandText = comandoSql;
+                comando.CommandText = " SET DATEFORMAT YMD; " + comandoSql;
                 comando.Transaction = transaction;
                 comando.ExecuteNonQuery();
                 transaction.Commit();
@@ -71,7 +95,7 @@ namespace DAL.Implementacao
             }
 
         }
-        protected void DeletarDAL(string comandoSql)
+        protected void DALdeletar(string comandoSql)
         {
             _sqlConnection.Open();
 
@@ -81,7 +105,7 @@ namespace DAL.Implementacao
 
             try
             {
-             
+
                 comando.Transaction = transcao;
 
                 comando.CommandText = comandoSql;
@@ -104,7 +128,7 @@ namespace DAL.Implementacao
                 _sqlConnection.Close();
             }
         }
-        protected T ObterPorIdDAL(string comandoSql)
+        protected T DALobterPorId(string comandoSql)
         {
             _sqlConnection.Open();
 
@@ -114,7 +138,7 @@ namespace DAL.Implementacao
 
             return objeto;
         }
-        protected List<T> ObterVariosDAL(string comandoSql)
+        protected List<T> DALobterVarios(string comandoSql)
         {
             _sqlConnection.Open();
 

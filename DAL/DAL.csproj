@@ -63,6 +63,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementacao\AssinaturaDAL.cs" />
     <Compile Include="Implementacao\ContaBancariaDAL.cs" />
     <Compile Include="Implementacao\DAL.cs" />
     <Compile Include="Implementacao\PagamentoParcelaDAL.cs" />
@@ -75,9 +76,8 @@
     <Compile Include="Implementacao\VwParcelaDAL.cs" />
     <Compile Include="Implementacao\VwServicoFinanceiroDAL.cs" />
     <Compile Include="Implementacao\VwSistemaDAL.cs" />
-    <Compile Include="Interfaces\IClienteDAL.cs" />
-    <Compile Include="Interfaces\IContatoDAL.cs" />
     <Compile Include="Interfaces\IDAL.cs" />
+    <Compile Include="Interfaces\IDALTransacao.cs" />
     <Compile Include="Interfaces\IEstadoDAL.cs" />
     <Compile Include="Interfaces\IPagamentoParcelaDAL.cs" />
     <Compile Include="Interfaces\IPaisDAL.cs" />

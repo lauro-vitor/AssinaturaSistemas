@@ -44,7 +44,7 @@ namespace DAL.Implementacao
                 ORDER BY [DataVencimento], [Numero]
             ";
 
-            return this.ObterVariosDAL(sql);
+            return this.DALobterVarios(sql);
         }
     }
 }

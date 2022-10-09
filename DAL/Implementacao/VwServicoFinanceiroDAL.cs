@@ -34,7 +34,7 @@ namespace DAL.Implementacao
         {
             string sql = "select * from VwServicoFinanceiro";
 
-            return this.ObterVariosDAL(sql);
+            return this.DALobterVarios(sql);
         }
     }
 }

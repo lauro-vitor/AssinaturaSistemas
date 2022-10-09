@@ -18,7 +18,7 @@ namespace Administrativo.Controllers
     public class ClienteController : Controller
     {
 
-        private readonly IClienteDAL _clienteDAL;
+        private readonly ClienteDAL _clienteDAL;
         private readonly IPaisDAL _paisDAL;
         private readonly IEstadoDAL _estadoDAL;
         public ClienteController()
@@ -72,7 +72,7 @@ namespace Administrativo.Controllers
                     }
                     else
                     {
-                        _clienteDAL.Alterar(cliente);
+                        _clienteDAL.Editar(cliente);
                         mensagem = "Cliente alterado com sucesso!";
                     }
 
@@ -265,7 +265,7 @@ namespace Administrativo.Controllers
             try
             {
                 var clientes = _clienteDAL
-                    .ObterVarios(c => true)
+                    .ObterVarios()
                     .Select(c => new SelectListItem
                     {
                         Value = c.IdCliente.ToString(),

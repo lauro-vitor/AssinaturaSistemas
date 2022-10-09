@@ -15,7 +15,7 @@ namespace Administrativo.Controllers
     [Authorize]
     public class ContatoController : Controller
     {
-        private readonly IContatoDAL _contatoDAL;
+        private readonly ContatoDAL _contatoDAL;
         public ContatoController()
         {
             _contatoDAL = new ContatoDAL();
@@ -34,7 +34,7 @@ namespace Administrativo.Controllers
             {
                 var contatoBLL = new ContataoBLL();
 
-                var contatos = _contatoDAL.ObterVarios(c => true);
+                var contatos = _contatoDAL.ObterVarios();
 
                 var erros = contatoBLL.ValidarContato(contato.IdContato, contato.IdCliente, contato.NomeCompleto, contato.Email,
                     contato.Celular, contato.Telefone, contato.Senha, contatos);
@@ -49,7 +49,7 @@ namespace Administrativo.Controllers
                     });
                 }
 
-                Contato contatoRetorno = _contatoDAL.Criar(contato.IdCliente, contato.NomeCompleto, contato.Email, contato.Celular, contato.Telefone, contato.Senha);
+                Contato contatoRetorno = _contatoDAL.Criar(contato);
 
                 HttpContext.Response.StatusCode = 201;
 
@@ -82,7 +82,7 @@ namespace Administrativo.Controllers
             {
                 var contatoBLL = new ContataoBLL();
 
-                var contatos = _contatoDAL.ObterVarios(c => true);
+                var contatos = _contatoDAL.ObterVarios();
 
                 var erros = contatoBLL.ValidarContato(contato.IdContato, contato.IdCliente, contato.NomeCompleto, contato.Email,
                     contato.Celular, contato.Telefone, contato.Senha, contatos);
@@ -101,7 +101,7 @@ namespace Administrativo.Controllers
                 }
 
 
-                Contato contatoRetorno = _contatoDAL.Editar(contato.IdContato, contato.IdCliente, contato.NomeCompleto, contato.Email, contato.Celular, contato.Telefone, contato.Senha);
+                Contato contatoRetorno = _contatoDAL.Editar(contato);
 
                 HttpContext.Response.StatusCode = 200;
 
@@ -158,7 +158,7 @@ namespace Administrativo.Controllers
               
                 int total = 0;
 
-                var contatosAux = _contatoDAL.ObterVarios(c => c.IdCliente == idCliente &&
+                var contatosAux = _contatoDAL.ObterVarios().Where(c => c.IdCliente == idCliente &&
                     (string.IsNullOrEmpty(nomeCompleto) || c.NomeCompleto.ToLower().Contains(nomeCompleto.ToLower().Trim())) &&
                     (string.IsNullOrEmpty(email) || c.Email.ToLower().Contains(email.ToLower().Trim())) &&
                     (string.IsNullOrEmpty(celular) || c.Celular.ToLower().Contains(celular.ToLower().Trim())) &&
@@ -195,7 +195,7 @@ namespace Administrativo.Controllers
         {
             try
             {
-                var contato = _contatoDAL.ObterContatoPorId(idContato);
+                var contato = _contatoDAL.ObterPorId(idContato);
 
 
                 HttpContext.Response.StatusCode = 200;

@@ -24,7 +24,7 @@ namespace DAL.Implementacao
                            ,'{objeto.Senha}'
                            , {(objeto.Desabilitado ? 1 : 0)})";
 
-            objeto.IdUsuario = this.CriarDAL(comandoSql);
+            objeto.IdUsuario = this.DALcriar(comandoSql);
 
 
             return objeto;
@@ -35,7 +35,7 @@ namespace DAL.Implementacao
             string comandoSql = $@"DELETE FROM [dbo].[Usuario]
                                   WHERE  IdUsuario = {id}";
 
-            this.DeletarDAL(comandoSql);
+            this.DALdeletar(comandoSql);
         }
 
         public Usuario Editar(Usuario objeto)
@@ -47,7 +47,7 @@ namespace DAL.Implementacao
                                       ,[Desabilitado] = {(objeto.Desabilitado ? 1 : 0)}
                                  WHERE IdUsuario  = {objeto.IdUsuario}";
 
-            this.EditarDAL(comandoSql);
+            this.DALeditar(comandoSql);
 
             return objeto;
         }
@@ -62,7 +62,7 @@ namespace DAL.Implementacao
                                   FROM [dbo].[Usuario]
                                   WHERE IdUsuario = {id}";
 
-            return this.ObterPorIdDAL(comandoSql);
+            return this.DALobterPorId(comandoSql);
         }
 
         public List<Usuario> ObterVarios()
@@ -74,7 +74,7 @@ namespace DAL.Implementacao
                                       ,[Desabilitado]
                                   FROM [dbo].[Usuario]";
 
-            return this.ObterVariosDAL(comandoSql);
+            return this.DALobterVarios(comandoSql);
         }
     }
 }

@@ -10,31 +10,70 @@ using System.Threading.Tasks;
 
 namespace DAL.Implementacao
 {
-    public class ContatoDAL : IContatoDAL
+    public class ContatoDAL : DAL<Contato>, IDAL<Contato>, IDALTransacao<Contato>
     {
-        private readonly SqlConnection _sqlConnection;
+
         public ContatoDAL()
         {
-            _sqlConnection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["AssinaturaSistemaSqlServer"].ConnectionString);
+
         }
-        public Contato Editar(int idContato, int idCliente, string nomeCompleto, string email, string celular, string telefone, string senha)
+
+        public Contato Criar(Contato contato)
         {
-            _sqlConnection.Open();
-            var comando = _sqlConnection.CreateCommand();
-            var transaction = _sqlConnection.BeginTransaction();
+            string sql = $@"
+                    INSERT INTO [Contato] ([IdCliente],
+                        [NomeCompleto], 
+                        [Email],
+                        [Celular],
+                        [Telefone],
+                        [Senha])
+                    VALUES ({contato.IdCliente},
+                            '{contato.NomeCompleto}',
+                            '{contato.Email}',
+                            '{contato.Celular}',
+                            '{contato.Telefone}',
+                            '{contato.Senha}'); 
 
+                    SELECT @@IDENTITY AS [Lasted-Inserted Identity Value];";
 
-            var contato = new Contato()
-            {
-                IdContato = idContato,
-                IdCliente = idCliente,
-                NomeCompleto = nomeCompleto.Trim(),
-                Email = email.Trim(),
-                Celular = celular.Trim(),
-                Telefone = telefone?.Trim(),
-                Senha = senha?.Trim()
-            };
+            contato.IdContato = this.DALcriar(sql);
 
+            return contato;
+        }
+
+        public Contato Criar(Contato contato, SqlConnection sqlConnection, SqlTransaction sqlTransaction)
+        {
+            string sql = $@"
+                    INSERT INTO [Contato] ([IdCliente],
+                        [NomeCompleto], 
+                        [Email],
+                        [Celular],
+                        [Telefone],
+                        [Senha])
+                    VALUES ({contato.IdCliente},
+                            '{contato.NomeCompleto}',
+                            '{contato.Email}',
+                            '{contato.Celular}',
+                            '{contato.Telefone}',
+                            '{contato.Senha}'); 
+
+                    SELECT @@IDENTITY AS [Lasted-Inserted Identity Value];";
+
+            contato.IdContato = this.DALcriarComTransacao(sql, sqlConnection, sqlTransaction);
+
+            return contato;
+        }
+
+        public void Deletar(int id)
+        {
+            string sql = $@"DELETE FROM [Contato]
+                            WHERE [IdContato] = {id}";
+
+            this.DALdeletar(sql);
+        }
+
+        public Contato Editar(Contato contato)
+        {
             string sql = $@"
                 UPDATE [Contato] SET 
                     [NomeCompleto] = '{contato.NomeCompleto}',
@@ -45,146 +84,23 @@ namespace DAL.Implementacao
                 WHERE [IdContato] = {contato.IdContato}
             ";
 
-            try
-            {
-                comando.CommandText = sql;
-                comando.Transaction = transaction;
-                comando.ExecuteNonQuery();
-                transaction.Commit();
-            }
-            catch (Exception ex)
-            {
-                transaction.Rollback();
-                throw ex;
-            }
-            finally
-            {
-                transaction.Dispose();
-                _sqlConnection.Close();
-            }
+            this.DALeditar(sql);
 
             return contato;
         }
 
-        public Contato Criar(int idCliente, string nomeCompleto, string email, string celular, string telefone, string senha)
+        public Contato ObterPorId(int id)
         {
-            _sqlConnection.Open();
-            var comando = _sqlConnection.CreateCommand();
-            var transaction = _sqlConnection.BeginTransaction();
+            string sql = $"SELECT * FROM Contato WHERE [IdContato] = {id}";
 
-            var contato = new Contato()
-            {
-                IdCliente = idCliente,
-                NomeCompleto = nomeCompleto.Trim(),
-                Email = email.Trim(),
-                Celular = celular.Trim(),
-                Telefone = telefone?.Trim(),
-                Senha = senha?.Trim()
-            };
-
-            string sql = $@"
-                INSERT INTO [Contato] ([IdCliente],
-                    [NomeCompleto], 
-                    [Email],
-                    [Celular],
-                    [Telefone],
-                    [Senha])
-                VALUES ({contato.IdCliente},
-                        '{contato.NomeCompleto}',
-                        '{contato.Email}',
-                        '{contato.Celular}',
-                        '{contato.Telefone}',
-                        '{contato.Senha}'); 
-
-                SELECT @@IDENTITY AS [Lasted-Inserted Identity Value];";
-
-            try
-            {
-                comando.CommandText = sql;
-                comando.Transaction = transaction;
-                var idInseridoRetorno = comando.ExecuteScalar();
-                contato.IdContato = int.Parse(idInseridoRetorno.ToString());
-                transaction.Commit();
-            }
-            catch (Exception ex)
-            {
-                transaction.Rollback();
-                throw ex;
-            }
-            finally
-            {
-                transaction.Dispose();
-                _sqlConnection.Close();
-            }
-
-            return contato;
+            return this.DALobterPorId(sql);
         }
 
-        public void Deletar(int idContato)
+        public List<Contato> ObterVarios()
         {
-            _sqlConnection.Open();
-
-            SqlCommand comando = _sqlConnection.CreateCommand();
-
-            var transcao = _sqlConnection.BeginTransaction();
-
-            try
-            {
-                string sql = $@"DELETE FROM [Contato]
-                                WHERE [IdContato] = {idContato}";
-
-                comando.Transaction = transcao;
-
-                comando.CommandText = sql;
-
-                comando.ExecuteNonQuery();
-
-                transcao.Commit();
-
-            }
-            catch (Exception ex)
-            {
-                transcao.Rollback();
-
-                throw ex;
-            }
-            finally
-            {
-                transcao.Dispose();
-
-                _sqlConnection.Close();
-            }
-        }
-
-        public Contato ObterContatoPorId(int idContato)
-        {
-            _sqlConnection.Open();
-
-            string sql = $"SELECT * FROM Contato WHERE [IdContato] = {idContato}";
-
-            var contato = _sqlConnection.Query<Contato>(sql).FirstOrDefault();
-
-            _sqlConnection.Close();
-
-            return contato;
-        }
-
-        public List<Contato> ObterVarios(Func<Contato, bool> filtro)
-        {
-            _sqlConnection.Open();
-
             string sql = "SELECT * FROM Contato";
 
-            var contatosAux = _sqlConnection.Query<Contato>(sql);
-
-
-            var contatos = contatosAux
-                .Where(filtro)
-                .ToList();
-
-            _sqlConnection.Close();
-
-            return contatos;
+            return this.DALobterVarios(sql);
         }
     }
 }

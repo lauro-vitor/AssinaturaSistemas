@@ -16,6 +16,7 @@ namespace Entidades
         public decimal ValorCartaoCredito { get; set; }
 
         public decimal ValorCartaoDebito { get; set; }
+        public string StripePaymentIntentId { get; set; }
 
         
     }

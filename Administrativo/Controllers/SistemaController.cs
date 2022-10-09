@@ -62,7 +62,7 @@ namespace Administrativo.Controllers
                     int.TryParse(CriptografiaUtil.Decrypt(idTipoSistema), out idTipoSistemaFiltro);
                 }
 
-                var clientes = _clienteDAL.ObterVarios(c => true);
+                var clientes = _clienteDAL.ObterVarios();
 
                 var tiposSistema = _tipoSistemaDAL.ObterVarios();
 

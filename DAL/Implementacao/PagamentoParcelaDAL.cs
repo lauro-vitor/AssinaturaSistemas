@@ -2,13 +2,14 @@
 using Entidades;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DAL.Implementacao
 {
-    public class PagamentoParcelaDAL : DAL<PagamentoParcela>, IDAL<PagamentoParcela>, IPagamentoParcelaDAL
+    public class PagamentoParcelaDAL : DAL<PagamentoParcela>, IDAL<PagamentoParcela>, IDALTransacao<PagamentoParcela>, IPagamentoParcelaDAL
     {
         public PagamentoParcela Criar(PagamentoParcela pagamentoParcela)
         {
@@ -29,7 +30,33 @@ namespace DAL.Implementacao
                    ,{pagamentoParcela.ValorCartaoDebito})
         ";
 
-            pagamentoParcela.IdPagamentoParcela = this.CriarDAL(sql);
+            pagamentoParcela.IdPagamentoParcela = this.DALcriar(sql);
+            return pagamentoParcela;
+        }
+
+        public PagamentoParcela Criar(PagamentoParcela pagamentoParcela, SqlConnection sqlConnection, SqlTransaction sqlTransaction)
+        {
+            string sql = $@"
+            SET DATEFORMAT YMD;
+
+            INSERT INTO [dbo].[PagamentoParcela]
+               ([IdParcela]
+               ,[DataPagamento]
+               ,[ValorDepositoBancario]
+               ,[ValorCartaoCredito]
+               ,[ValorCartaoDebito]
+               ,[StripePaymentIntentId])
+             VALUES
+                  (  {pagamentoParcela.IdParcela}
+                   ,'{pagamentoParcela.DataPagamento}'
+                   ,{pagamentoParcela.ValorDepositoBancario}
+                   ,{pagamentoParcela.ValorCartaoCredito}
+                   ,{pagamentoParcela.ValorCartaoDebito}
+                   ,'{(string.IsNullOrEmpty(pagamentoParcela.StripePaymentIntentId)? "NULL" : pagamentoParcela.StripePaymentIntentId)}' )
+        ";
+
+            pagamentoParcela.IdPagamentoParcela = this.DALcriarComTransacao(sql, sqlConnection, sqlTransaction);
+
             return pagamentoParcela;
         }
 
@@ -52,7 +79,7 @@ namespace DAL.Implementacao
              WHERE [IdPagamentoParcela] = {pagamentoParcela.IdPagamentoParcela}
         ";
 
-            this.EditarDAL(sql);
+            this.DALeditar(sql);
 
             return pagamentoParcela;
         }
@@ -65,11 +92,12 @@ namespace DAL.Implementacao
                           ,[ValorDepositoBancario]
                           ,[ValorCartaoCredito]
                           ,[ValorCartaoDebito]
+                          ,[StripePaymentIntentId]
 	                      ,[DataPagamentoVM] = FORMAT([dataPagamento],'yyyy-MM-dd')
                       FROM [dbo].[PagamentoParcela]
                       WHERE [IdParcela] = {idParcela}";
 
-            return this.ObterPorIdDAL(sql);
+            return this.DALobterPorId(sql);
         }
 
         public PagamentoParcela ObterPorId(int id)

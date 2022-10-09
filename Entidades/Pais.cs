@@ -10,5 +10,6 @@ namespace Entidades
     {
         public int IdPais { get; set; }
         public string NomePais { get; set; }
+        public bool Padrao { get; set; }
     }
 }

@@ -1,0 +1,210 @@
+﻿
+@{
+    ViewBag.Title = "BuyNow";
+}
+
+
+<script src="https://js.stripe.com/v3/"></script>
+<script src="~/Scripts/index.js" data-rel-js></script>
+
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="~/css/example2.css" data-rel-css="" />
+
+<style>
+    .selected {
+        background-color: rgba(0,0,0,0.2);
+    }
+</style>
+<main>
+
+    <div class="container" style="margin-top:20px; min-height:550px;">
+        <div id="passo1" style="display:none;">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                     style="width: 33.33%;">
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px;">
+                <div class="col-xs-12 col-sm-12">
+                    <div style="display:flex; justify-content:end;">
+                        <button onclick="clickAvancarPasso1()" type="button" class="btn btn-primary">Next</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 text-center" style="margin: 20px 0;">
+                    <h3>Register</h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="form-group">
+                        <label>
+                            Company <span style="color:red;">*</span>
+
+                        </label>
+                        <input id="companyTextBox" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <div class="form-group">
+                        <label>
+                            Full Name <span style="color:red;">*</span>
+                        </label>
+                        <input id="fullNameTextBox" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <div class="form-group">
+                        <label>
+                            E-mail <span style="color:red;">*</span>
+                        </label>
+                        <input id="emailTextBox" type="email" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Phone</label> <span style="color:red;">*</span>
+                        <input id="phoneTextBox" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div id="passo2" style="display:none;">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                     style="width: 66.66%;">
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px;">
+                <div class="col-xs-12 col-sm-12">
+                    <div style="display:flex;">
+                        <div style="display:flex; width:50%; justify-content:initial">
+                            <button onclick="clickVoltarPasso1()" type="button" class="btn btn-warning">Back</button>
+                        </div>
+                        <div style="display:flex; width: 50%; justify-content: end;">
+                            <button onclick="clickAvancarPasso2()" type="button" class="btn btn-primary">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 text-center" style="margin: 20px 0;">
+                    <h3>Plans</h3>
+                </div>
+            </div>
+
+            <div id="plansContainer">
+
+            </div>
+
+        </div>
+
+        <div id="passo3" style="display:none">
+            <div class="progress" style="margin-bottom:30px;">
+                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                     style="width: 100%;">
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px;">
+                <div class="col-xs-12 col-sm-12">
+                    <div style="display:flex;">
+                        <div style="display:flex; width:50%; justify-content:initial">
+                            <button onclick="clickVoltarPasso2()" type="button" class="btn btn-warning">Back</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 text-center" style="margin: 20px 0;">
+                    <h3>Payment</h3>
+                </div>
+            </div>
+
+            <div class="globalContent">
+                <section class="container-lg">
+                    <div class="cell example example2" id="example-2">
+                        <form>
+
+                            <div class="row">
+                                <div class="field" style="margin-bottom:20px;">
+                                    <div id="example2-card-number" class="input empty"></div>
+                                    <label for="example2-card-number" data-tid="elements_examples.form.card_number_label">Card number</label>
+                                    <div class="baseline"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="field half-width" style="margin-bottom:20px;">
+                                    <div id="example2-card-expiry" class="input empty"></div>
+                                    <label for="example2-card-expiry" data-tid="elements_examples.form.card_expiry_label">Expiration</label>
+                                    <div class="baseline"></div>
+                                </div>
+                                <div class="field half-width">
+                                    <div id="example2-card-cvc" class="input empty"></div>
+                                    <label for="example2-card-cvc" data-tid="elements_examples.form.card_cvc_label">CVC</label>
+                                    <div class="baseline"></div>
+                                </div>
+                            </div>
+                            <div style="display:flex; justify-content:center;">
+                                <button style="width:30%" type="submit" data-tid="elements_examples.form.pay_button">Subscribe</button>
+                            </div>
+
+                            <div class="error" role="alert">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17">
+                                    <path class="base" fill="#000" d="M8.5,17 C3.80557963,17 0,13.1944204 0,8.5 C0,3.80557963 3.80557963,0 8.5,0 C13.1944204,0 17,3.80557963 17,8.5 C17,13.1944204 13.1944204,17 8.5,17 Z"></path>
+                                    <path class="glyph" fill="#FFF" d="M8.5,7.29791847 L6.12604076,4.92395924 C5.79409512,4.59201359 5.25590488,4.59201359 4.92395924,4.92395924 C4.59201359,5.25590488 4.59201359,5.79409512 4.92395924,6.12604076 L7.29791847,8.5 L4.92395924,10.8739592 C4.59201359,11.2059049 4.59201359,11.7440951 4.92395924,12.0760408 C5.25590488,12.4079864 5.79409512,12.4079864 6.12604076,12.0760408 L8.5,9.70208153 L10.8739592,12.0760408 C11.2059049,12.4079864 11.7440951,12.4079864 12.0760408,12.0760408 C12.4079864,11.7440951 12.4079864,11.2059049 12.0760408,10.8739592 L9.70208153,8.5 L12.0760408,6.12604076 C12.4079864,5.79409512 12.4079864,5.25590488 12.0760408,4.92395924 C11.7440951,4.59201359 11.2059049,4.59201359 10.8739592,4.92395924 L8.5,7.29791847 L8.5,7.29791847 Z"></path>
+                                </svg>
+                                <span class="message"></span>
+                            </div>
+                        </form>
+                        <div class="success">
+
+                            <h3 class="title" data-tid="elements_examples.success.title"></h3>
+                            <p class="message">
+                                <span data-tid="elements_examples.success.message">
+                                </span>
+                                <span class="token"></span>
+                            </p>
+
+                        </div>
+
+                        <div class="caption">
+                            <span data-tid="elements_examples.caption.no_charge" class="no-charge"></span>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div id="confirmacaoPagamento" style="display:none;">
+            <div style="color: green; font-size: 22px; margin-bottom: 20px;">
+                Your Payment has been successfully
+            </div>
+
+            <div >
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nisl nisi, facilisis nec vulputate at, sodales in mi. Vivamus feugiat sodales pellentesque. Donec aliquet est vestibulum lectus congue, nec condimentum magna congue. Aliquam erat volutpat. Duis blandit tincidunt odio, sed congue orci ultricies et. Vestibulum scelerisque libero non aliquam commodo. Donec eu dictum ex. Nunc aliquet lorem a odio porta posuere. Vestibulum eget nisl risus. Donec sodales, elit ac tempus iaculis, turpis turpis rutrum risus, dapibus tincidunt dolor est vitae leo. Proin nec ex non ex tristique ornare nec vitae velit. Curabitur viverra dolor posuere justo venenatis, eget molestie lacus varius. Integer congue est justo, vitae hendrerit lorem sollicitudin ac. Donec ut nunc nisl. Proin lobortis felis et ante scelerisque suscipit.
+            </div>
+        </div>
+        <div id="confirmacaoEstorno"  style="display:none; color:red;margin-bottom:20px;" >
+            Occurring an error, but your payment has been refund! Please contact us.
+
+        </div>
+
+        <div id="erroContainer" class="alert alert-danger" style="display:none;">
+
+        </div>
+    </div>
+
+
+    @section scripts{
+        <script src="~/Scripts/Subscription/appSubscription.js"></script>
+    }
+
+</main>

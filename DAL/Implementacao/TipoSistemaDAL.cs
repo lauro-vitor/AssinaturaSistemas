@@ -34,7 +34,7 @@ namespace DAL.Implementacao
         {
             string sql = @" SELECT * FROM TipoSistema";
 
-            return this.ObterVariosDAL(sql);
+            return this.DALobterVarios(sql);
         }
     }
 }

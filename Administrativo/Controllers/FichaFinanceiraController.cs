@@ -180,13 +180,21 @@ namespace Administrativo.Controllers
         {
             try
             {
+                bool parcelaPaga = false;
+
                 var parcela = _parcelaDAL.ObterPorId(id);
+
+                var pagamentoParcela = _pagamentoParcelaDAL.ObterPagamentoParcelaPorIdParcela(id);
+
+                parcelaPaga = pagamentoParcela != null;
+              
 
                 HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
 
                 return Json(new
                 {
-                    parcela
+                    parcela,
+                    parcelaPaga
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -309,7 +317,9 @@ namespace Administrativo.Controllers
         {
             try
             {
+                
                 var pagamentoParcela = _pagamentoParcelaDAL.ObterPagamentoParcelaPorIdParcela(idParcela);
+                bool pagamentoStripe = false;
 
                 if (pagamentoParcela == null)
                 {
@@ -321,12 +331,18 @@ namespace Administrativo.Controllers
                         DataPagamentoVM = DateTime.Now.ToString("yyyy-MM-dd"),
                         ValorCartaoCredito = 0,
                         ValorCartaoDebito = 0,
-                        ValorDepositoBancario = 0
+                        ValorDepositoBancario = 0,
+                        StripePaymentIntentId = null
                     };
+                }
+                else
+                {
+                    pagamentoStripe = !string.IsNullOrEmpty(pagamentoParcela.StripePaymentIntentId);
                 }
 
                 return Json(new
                 {
+                    pagamentoStripe,
                     pagamentoParcela
                 }, JsonRequestBehavior.AllowGet);
 

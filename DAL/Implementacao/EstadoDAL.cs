@@ -161,7 +161,8 @@ namespace DAL.Implementacao
 	                        E.IdEstado,
 	                        E.IdPais,
 	                        E.NomeEstado,
-	                        P.NomePais
+	                        P.NomePais,
+                            E.[Padrao]
                         FROM Estado E
                         INNER JOIN Pais P ON E.IdPais = P.IdPais
                         WHERE  1 = 1

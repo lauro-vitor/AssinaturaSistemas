@@ -32,7 +32,7 @@ namespace DAL.Implementacao
                 WHERE IdSistema = {id}
             ";
 
-            return this.ObterPorIdDAL(sql);
+            return this.DALobterPorId(sql);
         }
 
         public List<VwSistema> ObterVarios()

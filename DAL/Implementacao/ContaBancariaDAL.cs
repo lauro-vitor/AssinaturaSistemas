@@ -25,7 +25,7 @@ namespace DAL.Implementacao
                                 ,'{contaBancaria.NomeBanco}'
                                 ,'{contaBancaria.Cnpj}')";
 
-            contaBancaria.IdContaBancaria = this.CriarDAL(sql);
+            contaBancaria.IdContaBancaria = this.DALcriar(sql);
 
             return contaBancaria;
         }
@@ -34,7 +34,7 @@ namespace DAL.Implementacao
         {
             string sql = $@"DELETE FROM ContaBancaria WHERE [IdContaBancaria] = {id}";
 
-            this.DeletarDAL(sql);
+            this.DALdeletar(sql);
         }
 
         public ContaBancaria Editar(ContaBancaria contaBancaria)
@@ -47,7 +47,7 @@ namespace DAL.Implementacao
                                   ,[Cnpj] = '{contaBancaria.Cnpj}'
                              WHERE [IdContaBancaria] = {contaBancaria.IdContaBancaria}";
 
-            this.EditarDAL(sql);
+            this.DALeditar(sql);
 
             return contaBancaria;
         }
@@ -63,7 +63,7 @@ namespace DAL.Implementacao
                           FROM [dbo].[ContaBancaria]
                           WHERE [IdContaBancaria] = {id}";
 
-            return this.ObterPorIdDAL(sql);
+            return this.DALobterPorId(sql);
         }
 
         public List<ContaBancaria> ObterVarios()
@@ -76,7 +76,7 @@ namespace DAL.Implementacao
                           ,[Cnpj]
                       FROM [dbo].[ContaBancaria]";
 
-            return this.ObterVariosDAL(sql);
+            return this.DALobterVarios(sql);
         }
     }
 }

@@ -2,13 +2,14 @@
 using Entidades;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DAL.Implementacao
 {
-    public class SistemaDAL : DAL<Sistema>, IDAL<Sistema>
+    public class SistemaDAL : DAL<Sistema>, IDAL<Sistema>, IDALTransacao<Sistema>
     {
         public Sistema Criar(Sistema sistema)
         {
@@ -35,7 +36,40 @@ namespace DAL.Implementacao
                        ,{(sistema.DataCancelamento.HasValue ? $"'{sistema.DataCancelamento.Value}'" : "NULL")})
             ";
 
-            int idSistema = this.CriarDAL(sql);
+            int idSistema = this.DALcriar(sql);
+
+            sistema.IdSistema = idSistema;
+
+            return sistema;
+        }
+
+        public Sistema Criar(Sistema sistema, SqlConnection sqlConnection, SqlTransaction sqlTransaction)
+        {
+
+            string sql = $@"
+                INSERT INTO [dbo].[Sistema]
+                       ([IdCliente]
+                       ,[IdTipoSistema]
+                       ,[DominioProvisorio]
+                       ,[Dominio]
+                       ,[Pasta]
+                       ,[BancoDeDados]
+                       ,[Ativo]
+                       ,[DataInicio]
+                       ,[DataCancelamento])
+                 VALUES
+                       ({sistema.IdCliente}
+                       ,{sistema.IdTipoSistema}
+                       ,'{sistema.DominioProvisorio}'
+                       ,'{sistema.Dominio}'
+                       ,'{sistema.Pasta}'
+                       ,'{sistema.BancoDeDados}'
+                       ,{(sistema.Ativo ? 1 : 0)}
+                       ,'{sistema.DataInicio}'
+                       ,{(sistema.DataCancelamento.HasValue ? $"'{sistema.DataCancelamento.Value}'" : "NULL")})
+            ";
+
+            int idSistema = this.DALcriarComTransacao(sql, sqlConnection, sqlTransaction);
 
             sistema.IdSistema = idSistema;
 
@@ -47,7 +81,7 @@ namespace DAL.Implementacao
             string sql = $@"DELETE FROM [dbo].[Sistema]
                           WHERE [IdSistema] = {id}";
 
-            this.DeletarDAL(sql);
+            this.DALdeletar(sql);
         }
 
         public Sistema Editar(Sistema sistema)
@@ -66,7 +100,7 @@ namespace DAL.Implementacao
              WHERE [IdSistema] = {sistema.IdSistema}
             ";
 
-            this.EditarDAL(sql);
+            this.DALeditar(sql);
 
             return sistema;
         }
@@ -86,7 +120,7 @@ namespace DAL.Implementacao
                       FROM [dbo].[Sistema]
                       WHERE [IdSistema] = {id} ";
 
-            return this.ObterPorIdDAL(sql);
+            return this.DALobterPorId(sql);
         }
 
         public List<Sistema> ObterVarios()
@@ -103,7 +137,7 @@ namespace DAL.Implementacao
                           ,[DataCancelamento]
                       FROM [dbo].[Sistema] ";
 
-            return this.ObterVariosDAL(sql);
+            return this.DALobterVarios(sql);
         }
     }
 }

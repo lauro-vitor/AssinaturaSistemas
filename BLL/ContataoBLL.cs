@@ -14,8 +14,7 @@ namespace BLL
         {
             var erros = new List<string>();
             var emailBLL = new EmailBLL();
-            var regexEhNumerico = new Regex("^[0-9]+$");
-
+           
             if (idCliente < 0)
                 erros.Add("Cliente é obrigatório");
 
@@ -38,10 +37,10 @@ namespace BLL
 
             if (string.IsNullOrEmpty(celular))
                 erros.Add("Celular é obrigatório");
-            else if (!regexEhNumerico.IsMatch(celular))
+            else if (!NumericoBLL.EhNumerico(celular))
                 erros.Add("Celular deve conter somente números");
 
-            if (!string.IsNullOrEmpty(telefone) && !regexEhNumerico.IsMatch(telefone))
+            if (!string.IsNullOrEmpty(telefone) && !NumericoBLL.EhNumerico(telefone))
                 erros.Add("Telefone deve conter somente números");
 
             if (!string.IsNullOrEmpty(senha) && senha.Length < 6)

@@ -10,20 +10,11 @@ using System.Threading.Tasks;
 
 namespace DAL.Implementacao
 {
-    public class ClienteDAL : IClienteDAL
+    public class ClienteDAL : DAL<Cliente>, IDAL<Cliente>, IDALTransacao<Cliente>
     {
-        private readonly SqlConnection _sqlConnection;
-        public ClienteDAL()
+       
+        public Cliente Criar(Cliente cliente, SqlConnection sqlConnection, SqlTransaction sqlTransaction)
         {
-            _sqlConnection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["AssinaturaSistemaSqlServer"].ConnectionString);
-        }
-
-        public void Alterar(Cliente cliente)
-        {
-            _sqlConnection.Open();
-            SqlCommand comando = _sqlConnection.CreateCommand();
-            var transaction = _sqlConnection.BeginTransaction();
-
             string dataCadastro = "null";
 
             if (cliente.DataCadastro.HasValue)
@@ -31,44 +22,35 @@ namespace DAL.Implementacao
                 dataCadastro = $"'{cliente.DataCadastro}'";
             }
 
-            string sql = $@"UPDATE Cliente
-                            SET [NomeEmpresa] = '{cliente.NomeEmpresa}',
-                                [DataCadastro] = {dataCadastro},
-                                [Ativo] = {(cliente.Ativo ? 1 : 0)},
-                                [IdEstado] = {cliente.IdEstado},
-                                [CodigoPostal] =  '{cliente.CodigoPostal}',
-                                [Endereco] = '{cliente.Endereco}',
-                                [Observacao] = '{cliente.Observacao}',
-                                [UltimaAtualizacao] = '{DateTime.Now}'
-                            WHERE [IdCliente] = {cliente.IdCliente}";
-            try
-            {
-                comando.CommandText = sql;
-                comando.Transaction = transaction;
-                comando.ExecuteNonQuery();
-                transaction.Commit();
+            string sql = $@" 
+                    
+                    INSERT INTO Cliente([NomeEmpresa],
+                        [DataCadastro],
+                        [Ativo],
+                        [IdEstado],
+                        [CodigoPostal],
+                        [Endereco],
+                        [Observacao],
+                        [UltimaAtualizacao])
+                    VALUES('{cliente.NomeEmpresa}',
+                           {dataCadastro},
+                           {(cliente.Ativo ? 1 : 0)},
+                           {cliente.IdEstado},
+                           '{cliente.CodigoPostal}',
+                           '{cliente.Endereco}',
+                           '{cliente.Observacao}',
+                           '{DateTime.Now}');
 
-            }
-            catch (Exception ex)
-            {
-                transaction.Rollback();
-                throw ex;
-            }
-            finally
-            {
-                transaction.Dispose();
-                _sqlConnection.Close();
-            }
+                SELECT @@IDENTITY AS [Last-Inserted Identity Value];
+                ";
+
+            cliente.IdCliente = this.DALcriarComTransacao(sql, sqlConnection, sqlTransaction);
+
+            return cliente;
         }
 
-        public void Criar(Cliente cliente)
+        public Cliente Criar(Cliente cliente)
         {
-            _sqlConnection.Open();
-
-            SqlCommand comando = _sqlConnection.CreateCommand();
-
-            var transaction = _sqlConnection.BeginTransaction();
-
             string dataCadastro = "null";
 
             if (cliente.DataCadastro.HasValue)
@@ -77,100 +59,77 @@ namespace DAL.Implementacao
             }
 
             string sql = $@"
-                INSERT INTO Cliente([NomeEmpresa],
-                    [DataCadastro],
-                    [Ativo],
-                    [IdEstado],
-                    [CodigoPostal],
-                    [Endereco],
-                    [Observacao],
-                    [UltimaAtualizacao])
-                VALUES('{cliente.NomeEmpresa}',
-                       {dataCadastro},
-                       {(cliente.Ativo ? 1 : 0)},
-                       {cliente.IdEstado},
-                       '{cliente.CodigoPostal}',
-                       '{cliente.Endereco}',
-                       '{cliente.Observacao}',
-                       '{DateTime.Now}');
+                    
+                    INSERT INTO Cliente([NomeEmpresa],
+                        [DataCadastro],
+                        [Ativo],
+                        [IdEstado],
+                        [CodigoPostal],
+                        [Endereco],
+                        [Observacao],
+                        [UltimaAtualizacao])
+                    VALUES('{cliente.NomeEmpresa}',
+                           {dataCadastro},
+                           {(cliente.Ativo ? 1 : 0)},
+                           {cliente.IdEstado},
+                           '{cliente.CodigoPostal}',
+                           '{cliente.Endereco}',
+                           '{cliente.Observacao}',
+                           '{DateTime.Now}');
 
-            SELECT @@IDENTITY AS [Last-Inserted Identity Value];
-            ";
+                SELECT @@IDENTITY AS [Last-Inserted Identity Value];
+                ";
 
-            try
-            {
-                comando.CommandText = sql;
-                comando.Transaction = transaction;
-                object idInserido = comando.ExecuteScalar();
-                cliente.IdCliente = int.Parse(idInserido.ToString());
-
-                transaction.Commit();
-            }
-            catch (Exception ex)
-            {
-                transaction.Rollback();
-                throw ex;
-            }
-            finally
-            {
-                transaction.Dispose();
-                _sqlConnection.Close();
-            }
-        }
-
-        public void Deletar(int idCliente)
-        {
-            _sqlConnection.Open();
-            var comando = _sqlConnection.CreateCommand();
-            var transaction = _sqlConnection.BeginTransaction();
-
-            try
-            {
-                comando.CommandText = "DELETE FROM Cliente WHERE IdCliente = " + idCliente;
-                comando.Transaction = transaction;
-                comando.ExecuteNonQuery();
-                transaction.Commit();
-            }
-            catch (Exception ex)
-            {
-                transaction.Rollback();
-                throw ex;
-            }
-            finally
-            {
-                transaction.Dispose();
-                _sqlConnection.Close();
-            }
-
-
-        }
-
-        public Cliente ObterPorId(int idCliente)
-        {
-            string query = $"SELECT * FROM VwListaClientes WHERE Idcliente = {idCliente}";
-
-            _sqlConnection.Open();
-
-            var cliente = _sqlConnection.Query<Cliente>(query).FirstOrDefault();
-
-            _sqlConnection.Close();
+            cliente.IdCliente = this.DALcriar(sql);
 
             return cliente;
         }
 
-        public List<Cliente> ObterVarios(Func<Cliente,bool> filtro)
+        public void Deletar(int id)
         {
-            List<Cliente> clientes = new List<Cliente>();
+            string sql = "DELETE FROM Cliente WHERE IdCliente = " + id;
 
-            _sqlConnection.Open();
+            this.DALdeletar(sql);
+        }
 
+        public Cliente Editar(Cliente cliente)
+        {
+            string dataCadastro = "null";
+
+            if (cliente.DataCadastro.HasValue)
+            {
+                dataCadastro = $"'{cliente.DataCadastro}'";
+            }
+
+            string sql = $@"    
+                                UPDATE Cliente
+                                SET [NomeEmpresa] = '{cliente.NomeEmpresa}',
+                                    [DataCadastro] = {dataCadastro},
+                                    [Ativo] = {(cliente.Ativo ? 1 : 0)},
+                                    [IdEstado] = {cliente.IdEstado},
+                                    [CodigoPostal] =  '{cliente.CodigoPostal}',
+                                    [Endereco] = '{cliente.Endereco}',
+                                    [Observacao] = '{cliente.Observacao}',
+                                    [UltimaAtualizacao] = '{DateTime.Now}'
+                                WHERE [IdCliente] = {cliente.IdCliente}";
+
+            this.DALeditar(sql);
+
+            return cliente;
+        }
+
+        public Cliente ObterPorId(int id)
+        {
+            string sql = $"SELECT * FROM VwListaClientes WHERE Idcliente = {id}";
+
+            return this.DALobterPorId(sql);
+        }
+
+        public List<Cliente> ObterVarios()
+        {
             string sql = "SELECT * FROM Cliente";
 
-            clientes = _sqlConnection.Query<Cliente>(sql).Where(filtro).ToList();
-                
-            _sqlConnection.Close();
-
-            return clientes;
+            return this.DALobterVarios(sql);
         }
 
         public List<VwListaClientes> ObterVwListaClientes(string nomeEmpresa, int idPais, int idEstado, string codigoPostal, string endereco, string dataCadastroInicial, string dataCadastroFinal, bool? ativo)
@@ -197,5 +156,7 @@ namespace DAL.Implementacao
             return vwListaClientes;
 
         }
+
+       
     }
 }

@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Util;
+using System.Data.SqlClient;
 
 namespace DAL.Implementacao
 {
-    public class ParcelaDAL : DAL<Parcela>, IDAL<Parcela>, IParcelaDAL
+    public class ParcelaDAL : DAL<Parcela>, IDAL<Parcela>, IDALTransacao<Parcela>, IParcelaDAL
     {
         public void AbrirParcela(int idParcela)
         {
@@ -20,7 +21,7 @@ namespace DAL.Implementacao
                  WHERE IdParcela = {idParcela}
             ";
 
-            this.EditarDAL(sql);
+            this.DALeditar(sql);
         }
 
         public void CancelarParcela(int idParcela)
@@ -34,7 +35,7 @@ namespace DAL.Implementacao
                  WHERE IdParcela = {idParcela}
             ";
 
-            this.EditarDAL(sql);
+            this.DALeditar(sql);
         }
 
         public List<Parcela> Criar(List<Parcela> parcelas)
@@ -51,7 +52,33 @@ namespace DAL.Implementacao
 
                 foreach (var parcela in parcelas)
                 {
-                    string sql = $@"
+                    this.Criar(parcela, _sqlConnection, transaction);
+                }
+
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw ex;
+            }
+            finally
+            {
+                transaction.Dispose();
+                _sqlConnection.Close();
+            }
+
+            return parcelas;
+        }
+
+        public Parcela Criar(Parcela objeto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Parcela Criar(Parcela parcela, SqlConnection sqlConnection, SqlTransaction sqlTransaction)
+        {
+            string sql = $@"
                     SET DATEFORMAT YMD;
 
                     INSERT INTO [dbo].[Parcela]
@@ -82,32 +109,9 @@ namespace DAL.Implementacao
                   SELECT @@IDENTITY AS [Last-Inserted Identity Value];
                     ";
 
-                    comando.CommandText = sql;
+            parcela.IdParcela = this.DALcriarComTransacao(sql, sqlConnection, sqlTransaction);
 
-                    object idInserido = comando.ExecuteScalar();
-
-                    parcela.IdParcela = int.Parse(idInserido.ToString());
-                }
-
-                transaction.Commit();
-            }
-            catch (Exception ex)
-            {
-                transaction.Rollback();
-                throw ex;
-            }
-            finally
-            {
-                transaction.Dispose();
-                _sqlConnection.Close();
-            }
-
-            return parcelas;
-        }
-
-        public Parcela Criar(Parcela objeto)
-        {
-            throw new NotImplementedException();
+            return parcela;
         }
 
         public void Deletar(int id)
@@ -116,7 +120,7 @@ namespace DAL.Implementacao
                DELETE FROM [dbo].[Parcela]
                WHERE IdParcela = {id}";
 
-            this.DeletarDAL(sql);
+            this.DALdeletar(sql);
         }
 
         public Parcela Editar(Parcela parcela)
@@ -131,7 +135,7 @@ namespace DAL.Implementacao
                       ,[Observacao] = '{parcela.Observacao}'
                  WHERE IdParcela = {parcela.IdParcela}";
 
-            this.EditarDAL(sql);
+            this.DALeditar(sql);
 
             return parcela;
         }
@@ -153,7 +157,7 @@ namespace DAL.Implementacao
                       FROM [dbo].[Parcela]
                       WHERE IdParcela = {id} ";
 
-            return this.ObterPorIdDAL(sql);
+            return this.DALobterPorId(sql);
         }
 
         public List<Parcela> ObterVarios()
@@ -169,7 +173,7 @@ namespace DAL.Implementacao
                  WHERE IdParcela = {idParcela}
             ";
 
-            this.EditarDAL(sql);
+            this.DALeditar(sql);
         }
     }
 }

@@ -13,6 +13,23 @@ namespace AssinaturaSistemasSolution.Controllers
         {
             return View();
         }
+
+        public ViewResult About()
+        {
+            return View();
+        }
+        public ViewResult BuyNow()
+        {
+            return View();
+        }
+        public ViewResult ContactUS()
+        {
+            return View();
+        }
+        public ViewResult Versions()
+        {
+            return View();
+        }
     
     }
 }

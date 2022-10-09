@@ -1,8 +1,13 @@
 ﻿using AssinaturaSistemasSolution.Models;
+using AssinaturaSistemasSolution.Service;
+using DAL.Implementacao;
+using Entidades;
+using Entidades.enums;
 using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -10,135 +15,229 @@ namespace AssinaturaSistemasSolution.Controllers
 {
     public class SubscriptionController : Controller
     {
+        private readonly EstadoDAL _estadoDAL;
+        private readonly ServicoFinanceiroDAL _servicoFinanceiroDAL;
+        private readonly StripeService _stripeService;
+        private readonly TipoSistemaDAL _tipoSistemaDAL;
+        private readonly AssinaturaDAL _assinaturaDAL;
 
         public SubscriptionController()
         {
-            StripeConfiguration.ApiKey = System.Configuration.ConfigurationManager.AppSettings["secret_key"];
-        }
-        // GET: Subscription
-        public ActionResult Index()
-        {
-            return View();
-        }
-        [HttpGet]
-        public ActionResult Register()
-        {
-            return View();
+            _estadoDAL = new EstadoDAL();
+            _servicoFinanceiroDAL = new ServicoFinanceiroDAL();
+            _stripeService = new StripeService();
+            _tipoSistemaDAL = new TipoSistemaDAL();
+            _assinaturaDAL = new AssinaturaDAL();
         }
 
-        [HttpPost]//create-customer
-        public ActionResult Register(FormCollection formCollection)
+
+        [HttpPost]
+        public JsonResult Subscribe(SubscriptionModel subscriptionModel)
         {
-            BillingModel billingModel = new BillingModel();
-
-            var customerService = new CustomerService();
-
-            string email = formCollection["email"];
-
-            var creatCustomerOptions = new CustomerCreateOptions
-            {
-                Email = email,
-            };
-
-            var customer = customerService.Create(creatCustomerOptions);
-
-
-            billingModel.CustomerId = customer.Id;
-
-            billingModel.LoadPrices();
-
-            return View("Prices", billingModel);
-        }
-
-        [HttpPost]//create-subscription
-        public ActionResult Prices(FormCollection formCollection)
-        {
-            BillingModel billingModel = new BillingModel();
-
-            string priceId = formCollection["priceId"];
-
-            string customerId = formCollection["customerId"];
-
-            billingModel.CustomerId = customerId;
-
-
-            // Create subscription
-            var subscriptionOptions = new SubscriptionCreateOptions
-            {
-                Customer = customerId,
-                Items = new List<SubscriptionItemOptions>
-                {
-                    new SubscriptionItemOptions
-                    {
-                        Price = priceId,
-                    },
-                },
-                PaymentBehavior = "default_incomplete",
-            };
-
-            subscriptionOptions.AddExpand("latest_invoice.payment_intent");
-
-            var subscriptionService = new SubscriptionService();
-
             try
             {
-                Subscription subscription = subscriptionService.Create(subscriptionOptions);
+                var erros = _stripeService.ValidateCreateSubscription(subscriptionModel);
 
-                billingModel.SubscrptionId = subscription.Id;
+                if (erros.Count > 0)
+                {
+                    HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
-                billingModel.PaymentIntentClientSecret = subscription.LatestInvoice.PaymentIntent.ClientSecret;
+                    return Json(new
+                    {
+                        erros
+                    }, JsonRequestBehavior.AllowGet);
+                }
 
-                return View("Subscribe", billingModel);
+                //criar cliente no stripe
+                string customerId = _stripeService.CreateCustomer(subscriptionModel.Email);
+
+                //cria a assinatura no stripe
+                var subscription = _stripeService.CreateSubscription(customerId, subscriptionModel.PriceId);
+
+
+
+                return Json(new
+                {
+                    subscritpionId = subscription.Id,
+
+                    paymentIntentClientSecret = subscription.LatestInvoice.PaymentIntent.ClientSecret,
+
+                    publishableKey = System.Configuration.ConfigurationManager.AppSettings["public_key"]
+
+                }, JsonRequestBehavior.AllowGet);
+
             }
-            catch (StripeException e)
+            catch (Exception ex)
             {
-                billingModel.MessageErros.Add($"Failed to create subscription.{e.Message}");
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+                return Json(new
+                {
+                    erros = new List<string>()
+                    {
+                        ex.Message
+                    }
+                }, JsonRequestBehavior.AllowGet);
             }
 
-            billingModel.LoadPrices();
-
-            return View(billingModel);
         }
 
         [HttpPost]
-        public ActionResult Subscribe(FormCollection formCollection)
+        public JsonResult ConfirmPaymentStripe(ConfirmPaymentModel confirmPaymentModel)
         {
-
-            AccountModel accountModel = new AccountModel();
+            var erros = _stripeService.ValidateConfirmPaymentModel(confirmPaymentModel);
 
             try
             {
-                string customerId = formCollection["customerId"];
-
-                accountModel.CustomerId = customerId;
-
-                var options = new SubscriptionListOptions
+               
+                if(erros.Count > 0)
                 {
-                    Customer = customerId,
-                    Status = "all",
+                    throw new Exception("");
+                }
+
+                var estado = _estadoDAL.Obter().FirstOrDefault(e => e.Padrao);
+
+                if (estado == null)
+                    throw new Exception("Estado não contrado");
+
+                var servicoFinacieroContratado = _servicoFinanceiroDAL
+                    .ObterVarios()
+                    .FirstOrDefault(sf => confirmPaymentModel.PriceId.Equals(sf.StripePriceId) && sf.IdTipoSistema.HasValue);
+
+                if (servicoFinacieroContratado == null)
+                    throw new Exception("Serviço financeiro não encontrado");
+
+                var tipoSistema = _tipoSistemaDAL
+                    .ObterVarios()
+                    .FirstOrDefault(ts => ts.IdTipoSistema == servicoFinacieroContratado.IdTipoSistema.Value);
+
+
+
+                Cliente cliente = new Cliente()
+                {
+                    Ativo = true,
+                    CodigoPostal = "",
+                    DataCadastro = DateTime.Now,
+                    Endereco = "",
+                    IdEstado = estado.IdEstado,
+                    IdPais = estado.IdPais,
+                    NomeEmpresa = confirmPaymentModel.Company,
+                    Observacao = "Cliente criado por meio de pagamento stripe",
+                    UltimaAtualizacao = DateTime.Now
                 };
 
-                options.AddExpand("data.default_payment_method");
 
-                var service = new SubscriptionService();
+                Contato contato = new Contato()
+                {
+                    Email = confirmPaymentModel.Email,
+                    Telefone = confirmPaymentModel.Phone,
+                    NomeCompleto = confirmPaymentModel.FullName,
+                    Senha = "123456",
+                    Celular = "",
+                };
 
-                var subscriptions = service.List(options);
+                string descricaoNomeCliente = confirmPaymentModel.Company.Replace(" ", "").ToLower().Trim();
 
-                accountModel.Subscriptions = subscriptions.ToList();
+                string descricaoTipoSistema = tipoSistema.Descricao.ToLower().Trim();
+
+
+                Sistema sistema = new Sistema()
+                {
+                    Ativo = true,
+                    BancoDeDados = $"bd_{descricaoTipoSistema}_{descricaoNomeCliente}",
+                    DataCancelamento = null,
+                    DataInicio = DateTime.Now,
+                    Dominio = "",
+                    DominioProvisorio = $"www.{descricaoNomeCliente}-test.com",
+                    Pasta = $"/{descricaoTipoSistema}/{descricaoNomeCliente}",
+                    IdTipoSistema = tipoSistema.IdTipoSistema,
+                };
+
+
+
+                Parcela parcela = new Parcela()
+                {
+                    Acrescimo = 0,
+                    DataCancelamento = null,
+                    DataGeracao = DateTime.Now,
+                    DataVencimento = DateTime.Now,
+                    Desconto = 0,
+                    IdServicoFinanceiro = servicoFinacieroContratado.IdServicoFinanceiro,
+                    IdStatusParcela = (int)EnumStatusParcela.Pago,
+                    Numero = 1,
+                    Observacao = "Parcela Stripe",
+                    Valor = servicoFinacieroContratado.ValorCobranca
+                };
+
+
+                PagamentoParcela pagamentoParcela = new PagamentoParcela()
+                {
+                    DataPagamento = DateTime.Now,
+                    ValorCartaoCredito = confirmPaymentModel.PaymentIntent.Amount,
+                    ValorCartaoDebito = 0,
+                    ValorDepositoBancario = 0,
+                    StripePaymentIntentId = confirmPaymentModel.PaymentIntent.Id
+                };
+
+                _assinaturaDAL.Criar(cliente, contato, sistema, parcela, pagamentoParcela);
+
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
+
+                return Json(new
+                {
+                    mensagem = "Ok"
+                }, JsonRequestBehavior.AllowGet);
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                accountModel.MessageErros.Add(ex.Message);
+                //faz o estorno
+                _stripeService.Refund(confirmPaymentModel.PaymentIntent);
+
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+                if (!string.IsNullOrEmpty(ex.Message))
+                    erros.Add(ex.Message);
+
+                return Json(new
+                {
+                   erros
+                }, JsonRequestBehavior.AllowGet);
             }
 
-            return View("Account", accountModel);
         }
 
         [HttpGet]
-        public ActionResult Account()
+        public JsonResult ObtemServicosFinanceiroStripe()
         {
-            //depois fazer area do cliente
-            return View();
+            try
+            {
+                var servicosFinanceiro = _servicoFinanceiroDAL
+                    .ObterVarios()
+                    .Where(sf => !string.IsNullOrEmpty(sf.StripePriceId))
+                    .OrderBy(sf => sf.StripeOrdem);
+
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
+
+                return Json(new
+                {
+                    servicosFinanceiro
+                }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+                return Json(new
+                {
+                    erros = new List<string>()
+                    {
+                        ex.Message
+                    }
+
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

@@ -17,5 +17,10 @@ namespace Entidades
         public int DiaVencimento { get; set; }
         public decimal ValorCobranca { get; set; }
         public int QuantidadeParcelas { get; set; }
+        public string StripePriceId { get; set; }
+        public int StripeOrdem { get; set; }
+
+        public int? IdTipoSistema { get; set; }
+
     }
 }
