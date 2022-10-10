@@ -398,6 +398,8 @@ function registerElements(elements, exampleName, paymentIntentClientSecret) {
         }).then((result) => {
             if (result.error) {
                 mensagemErroTexto.innerHTML = `Payment failed: ${result.error.message}`;
+                loading.desbloquear();
+                return;
             } else {
 
                 mensagemErroTexto.innerHTML = "";
